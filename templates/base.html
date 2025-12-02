@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Chengeta{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Chengeta Logo" class="logo-img">
+            </div>
+            <ul class="nav-menu">
+                <li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+                <li><a href="/transactions" class="nav-link">Transactions</a></li>
+                <li><a href="/budgets" class="nav-link">Budgets</a></li>
+                <li><a href="/reports" class="nav-link">Reports</a></li>
+                <li><a href="/ai-advisor" class="nav-link">🤖 ChengeAI</a></li>
+                <li><a href="/resources" class="nav-link">📚 Resources</a></li>
+            </ul>
+            <div class="nav-user">
+                <span class="user-name">{{ current_user.full_name or current_user.username }}</span>
+                <div class="user-menu">
+                    <button class="user-menu-btn">
+                        {% if current_user.profile_picture %}
+                            <img src="/uploads/profiles/{{ current_user.profile_picture }}" alt="Profile" class="user-avatar-img">
+                        {% else %}
+                            <span class="user-avatar">{{ current_user.username[0].upper() }}</span>
+                        {% endif %}
+                    </button>
+                    <div class="user-dropdown">
+                        <a href="{{ url_for('auth.settings') }}">⚙️ Settings</a>
+                        <a href="{{ url_for('auth.logout') }}">🚪 Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
+

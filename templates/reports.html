@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Reports - Chengeta{% endblock %}
+
+{% block content %}
+<div class="reports-page">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Financial Reports</h1>
+        <button class="btn btn-primary" onclick="generateAllCharts()">Generate All Charts</button>
+    </div>
+
+    <!-- Charts Grid -->
+    <div class="reports-grid">
+        <!-- Income vs Expenses -->
+        <div class="report-card">
+            <div class="report-header">
+                <h3>Income vs Expenses</h3>
+                <button class="btn btn-sm btn-secondary" onclick="generateChart('income_vs_expenses')">Refresh</button>
+            </div>
+            <div class="chart-container">
+                <img id="chart-income-expenses" src="/api/charts/income_vs_expenses" alt="Income vs Expenses" onerror="this.src='/static/img/placeholder.png'">
+            </div>
+        </div>
+
+        <!-- Expense Breakdown -->
+        <div class="report-card">
+            <div class="report-header">
+                <h3>Expense Breakdown</h3>
+                <button class="btn btn-sm btn-secondary" onclick="generateChart('expense_breakdown')">Refresh</button>
+            </div>
+            <div class="chart-container">
+                <img id="chart-expense-breakdown" src="/api/charts/expense_breakdown" alt="Expense Breakdown" onerror="this.src='/static/img/placeholder.png'">
+            </div>
+        </div>
+
+        <!-- Income Breakdown -->
+        <div class="report-card">
+            <div class="report-header">
+                <h3>Income Breakdown</h3>
+                <button class="btn btn-sm btn-secondary" onclick="generateChart('income_breakdown')">Refresh</button>
+            </div>
+            <div class="chart-container">
+                <img id="chart-income-breakdown" src="/api/charts/income_breakdown" alt="Income Breakdown" onerror="this.src='/static/img/placeholder.png'">
+            </div>
+        </div>
+
+        <!-- Spending Over Time -->
+        <div class="report-card">
+            <div class="report-header">
+                <h3>Spending Over Time</h3>
+                <button class="btn btn-sm btn-secondary" onclick="generateChart('spending_over_time')">Refresh</button>
+            </div>
+            <div class="chart-container">
+                <img id="chart-spending-time" src="/api/charts/spending_over_time" alt="Spending Over Time" onerror="this.src='/static/img/placeholder.png'">
+            </div>
+        </div>
+
+        <!-- Budget Progress -->
+        <div class="report-card">
+            <div class="report-header">
+                <h3>Budget Progress</h3>
+                <button class="btn btn-sm btn-secondary" onclick="generateChart('budget_progress')">Refresh</button>
+            </div>
+            <div class="chart-container">
+                <img id="chart-budget-progress" src="/api/charts/budget_progress" alt="Budget Progress" onerror="this.src='/static/img/placeholder.png'">
+            </div>
+        </div>
+
+        <!-- Cumulative Balance -->
+        <div class="report-card">
+            <div class="report-header">
+                <h3>Cumulative Balance</h3>
+                <button class="btn btn-sm btn-secondary" onclick="generateChart('cumulative_balance')">Refresh</button>
+            </div>
+            <div class="chart-container">
+                <img id="chart-cumulative" src="/api/charts/cumulative_balance" alt="Cumulative Balance" onerror="this.src='/static/img/placeholder.png'">
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Summary -->
+    <div class="category-summary">
+        <h3>Category Summary</h3>
+        <div class="category-table-container">
+            <table class="category-table" id="category-summary-table">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Income</th>
+                        <th>Expenses</th>
+                        <th>Net</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="4" class="text-center">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/reports.js') }}"></script>
+{% endblock %}
+

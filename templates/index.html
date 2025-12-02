@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Chengeta{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Dashboard</h1>
+        <p class="subtitle">Welcome back! Here's your financial overview</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="cards-grid">
+        <div class="card card-income">
+            <div class="card-icon">📈</div>
+            <div class="card-content">
+                <p class="card-label">Total Income</p>
+                <h2 class="card-value" id="total-income">$0.00</h2>
+            </div>
+        </div>
+
+        <div class="card card-expense">
+            <div class="card-icon">📉</div>
+            <div class="card-content">
+                <p class="card-label">Total Expenses</p>
+                <h2 class="card-value" id="total-expenses">$0.00</h2>
+            </div>
+        </div>
+
+        <div class="card card-balance">
+            <div class="card-icon">💵</div>
+            <div class="card-content">
+                <p class="card-label">Current Balance</p>
+                <h2 class="card-value" id="current-balance">$0.00</h2>
+            </div>
+        </div>
+
+        <div class="card card-transactions">
+            <div class="card-icon">📊</div>
+            <div class="card-content">
+                <p class="card-label">Total Transactions</p>
+                <h2 class="card-value" id="transaction-count">0</h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="charts-row">
+        <!-- Spending by Category -->
+        <div class="chart-card">
+            <h3>Spending by Category</h3>
+            <canvas id="category-chart"></canvas>
+        </div>
+
+        <!-- Income vs Expenses -->
+        <div class="chart-card">
+            <h3>Income vs Expenses</h3>
+            <canvas id="comparison-chart"></canvas>
+        </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="recent-section">
+        <div class="section-header">
+            <h3>Recent Transactions</h3>
+            <a href="/transactions" class="btn btn-secondary btn-sm">View All</a>
+        </div>
+        <div class="transactions-table-container">
+            <table class="transactions-table" id="recent-transactions">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5" class="text-center">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="quick-actions">
+        <button class="btn btn-primary" onclick="showAddTransactionModal('income')">
+            + Add Income
+        </button>
+        <button class="btn btn-danger" onclick="showAddTransactionModal('expense')">
+            + Add Expense
+        </button>
+        <button class="btn btn-secondary" onclick="window.location.href='/budgets'">
+            Set Budget
+        </button>
+    </div>
+</div>
+
+<!-- Add Transaction Modal -->
+<div id="add-transaction-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-title">Add Transaction</h2>
+            <span class="close" onclick="closeModal()">&times;</span>
+        </div>
+        <form id="add-transaction-form">
+            <div class="form-group">
+                <label for="amount">Amount</label>
+                <input type="number" id="amount" name="amount" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Category</label>
+                <input type="text" id="category" name="category" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" id="description" name="description" required>
+            </div>
+            <input type="hidden" id="transaction-type" name="type">
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button type="submit" class="btn btn-primary">Add Transaction</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}
+

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Financial Resources - Chengeta{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/resources.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="resources-page">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1>📚 Financial Learning Resources</h1>
+            <p class="subtitle">Curated audiobooks and videos to boost your financial knowledge</p>
+        </div>
+        <div class="filter-tabs">
+            <button class="filter-tab active" onclick="filterResources('all')">All</button>
+            <button class="filter-tab" onclick="filterResources('audiobooks')">📖 Audiobooks</button>
+            <button class="filter-tab" onclick="filterResources('videos')">🎥 Videos</button>
+        </div>
+    </div>
+
+    <!-- Featured Section -->
+    <div class="featured-section">
+        <h2>⭐ Recommended for You</h2>
+        <div class="featured-grid" id="featured-grid">
+            <!-- Will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Audiobooks Section -->
+    <div class="resource-section" data-category="audiobooks">
+        <div class="section-header">
+            <h2>📖 Financial Audiobooks</h2>
+            <p>Listen and learn on the go</p>
+        </div>
+        <div class="resources-grid" id="audiobooks-grid">
+            <!-- Will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Videos Section -->
+    <div class="resource-section" data-category="videos">
+        <div class="section-header">
+            <h2>🎥 Educational Videos</h2>
+            <p>Watch and master financial concepts</p>
+        </div>
+        <div class="resources-grid" id="videos-grid">
+            <!-- Will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="categories-section">
+        <h3>Browse by Topic</h3>
+        <div class="category-chips">
+            <button class="category-chip" onclick="filterByTopic('budgeting')">💰 Budgeting</button>
+            <button class="category-chip" onclick="filterByTopic('investing')">📈 Investing</button>
+            <button class="category-chip" onclick="filterByTopic('debt')">💳 Debt Freedom</button>
+            <button class="category-chip" onclick="filterByTopic('savings')">🏦 Saving Money</button>
+            <button class="category-chip" onclick="filterByTopic('retirement')">🏖️ Retirement</button>
+            <button class="category-chip" onclick="filterByTopic('mindset')">🧠 Money Mindset</button>
+            <button class="category-chip" onclick="filterByTopic('entrepreneurship')">🚀 Business</button>
+        </div>
+    </div>
+</div>
+
+<!-- Resource Detail Modal -->
+<div id="resource-modal" class="modal">
+    <div class="modal-content modal-large">
+        <div class="modal-header">
+            <h2 id="resource-title">Resource Title</h2>
+            <span class="close" onclick="closeResourceModal()">&times;</span>
+        </div>
+        <div class="resource-detail" id="resource-detail">
+            <!-- Resource details will be loaded here -->
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/resources.js') }}"></script>
+{% endblock %}
+

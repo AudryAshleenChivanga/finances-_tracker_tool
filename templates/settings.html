@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - Chengeta{% endblock %}
+
+{% block content %}
+<div class="settings-page">
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Settings</h1>
+        <p class="subtitle">Manage your account and preferences</p>
+    </div>
+
+    <div class="settings-layout">
+        <!-- Profile Settings -->
+        <div class="settings-section">
+            <h2>Profile Information</h2>
+            
+            <!-- Profile Picture Upload -->
+            <div class="profile-picture-section">
+                <div class="profile-upload-header">
+                    <span class="upload-icon">📸</span>
+                    <div>
+                        <h3>Profile Photo</h3>
+                        <p>Upload your photo (Max 5MB)</p>
+                    </div>
+                </div>
+                <div class="profile-picture-wrapper">
+                    <div class="profile-picture-preview" id="profile-picture-preview">
+                        <span class="profile-initial" id="profile-initial">A</span>
+                        <img id="profile-picture-img" style="display: none;">
+                    </div>
+                    <div class="profile-picture-actions">
+                        <label for="profile-picture-input" class="btn btn-primary btn-sm">
+                            Upload
+                        </label>
+                        <input type="file" id="profile-picture-input" accept="image/*" style="display: none;">
+                        <button type="button" class="btn btn-danger btn-sm" id="remove-picture-btn" style="display: none;">
+                            Remove
+                        </button>
+                    </div>
+                </div>
+                <div class="upload-progress" id="upload-progress" style="display: none;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="upload-progress-bar"></div>
+                    </div>
+                    <p class="progress-text" id="upload-progress-text">Uploading...</p>
+                </div>
+            </div>
+
+            <form id="profile-form">
+                <div class="form-group">
+                    <label for="full_name">Full Name</label>
+                    <input type="text" id="full_name" name="full_name" placeholder="Your full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" disabled>
+                    <small>Username cannot be changed</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="your@email.com">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Profile</button>
+            </form>
+        </div>
+
+        <!-- Preferences -->
+        <div class="settings-section">
+            <h2>Preferences</h2>
+            <form id="preferences-form">
+                <div class="form-group">
+                    <label for="theme">Theme</label>
+                    <select id="theme" name="theme">
+                        <option value="light">Light</option>
+                        <option value="dark">Dark</option>
+                        <option value="auto">Auto</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="currency">Currency</label>
+                    <select id="currency" name="currency">
+                        <optgroup label="Major Currencies">
+                            <option value="USD">USD ($) - US Dollar</option>
+                            <option value="EUR">EUR (€) - Euro</option>
+                            <option value="GBP">GBP (£) - British Pound</option>
+                            <option value="JPY">JPY (¥) - Japanese Yen</option>
+                        </optgroup>
+                        <optgroup label="African Currencies">
+                            <option value="ZAR">ZAR (R) - South African Rand</option>
+                            <option value="NGN">NGN (₦) - Nigerian Naira</option>
+                            <option value="KES">KES (KSh) - Kenyan Shilling</option>
+                            <option value="GHS">GHS (GH₵) - Ghanaian Cedi</option>
+                            <option value="EGP">EGP (E£) - Egyptian Pound</option>
+                            <option value="MAD">MAD (DH) - Moroccan Dirham</option>
+                            <option value="TZS">TZS (TSh) - Tanzanian Shilling</option>
+                            <option value="UGX">UGX (USh) - Ugandan Shilling</option>
+                            <option value="RWF">RWF (RF) - Rwandan Franc</option>
+                            <option value="ETB">ETB (Br) - Ethiopian Birr</option>
+                            <option value="ZMW">ZMW (K) - Zambian Kwacha</option>
+                            <option value="BWP">BWP (P) - Botswana Pula</option>
+                            <option value="MUR">MUR (₨) - Mauritian Rupee</option>
+                            <option value="NAD">NAD ($) - Namibian Dollar</option>
+                            <option value="XAF">XAF (FCFA) - Central African Franc</option>
+                            <option value="XOF">XOF (CFA) - West African Franc</option>
+                            <option value="TND">TND (DT) - Tunisian Dinar</option>
+                            <option value="DZD">DZD (DA) - Algerian Dinar</option>
+                            <option value="AOA">AOA (Kz) - Angolan Kwanza</option>
+                            <option value="MZN">MZN (MT) - Mozambican Metical</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="budget_alert_threshold">Budget Alert Threshold (%)</label>
+                    <input type="number" id="budget_alert_threshold" name="budget_alert_threshold" min="0" max="100" value="80">
+                    <small>Get alerts when you reach this percentage of your budget</small>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Preferences</button>
+            </form>
+        </div>
+
+        <!-- Default Categories -->
+        <div class="settings-section">
+            <h2>Default Categories</h2>
+            <form id="categories-form">
+                <div class="form-group">
+                    <label for="default_income_category">Default Income Category</label>
+                    <input type="text" id="default_income_category" name="default_income_category" placeholder="e.g., Salary">
+                </div>
+
+                <div class="form-group">
+                    <label for="default_expense_category">Default Expense Category</label>
+                    <input type="text" id="default_expense_category" name="default_expense_category" placeholder="e.g., Other">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Save Categories</button>
+            </form>
+        </div>
+
+        <!-- Account Info -->
+        <div class="settings-section">
+            <h2>Account Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="info-label">Member Since</span>
+                    <span class="info-value" id="created_at">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Last Login</span>
+                    <span class="info-value" id="last_login">-</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">User ID</span>
+                    <span class="info-value" id="user_id">-</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}
+

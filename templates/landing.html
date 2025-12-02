@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chengeta - Manage Your Money Better</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="landing-body">
+    <!-- Navigation -->
+    <nav class="landing-nav">
+        <div class="container">
+            <div class="nav-brand">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Chengeta Logo" class="logo-img">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#testimonials">Reviews</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="nav-actions">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-ghost">Log In</a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Started</a>
+            </div>
+        </div>
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#testimonials">Reviews</a>
+            <div class="mobile-menu-actions">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-ghost btn-block">Log In</a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-block">Get Started</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span class="badge-icon">⭐</span>
+                    <span>Track Your Wealth & Achieve Financial Freedom</span>
+                </div>
+                <h1 class="hero-title">Manage Your Money with Zero Fees</h1>
+                <p class="hero-subtitle">
+                    Track every dollar, set smart budgets, and watch your wealth grow. Get real-time insights on your spending and achieve your financial goals faster.
+                </p>
+                <div class="hero-actions">
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">
+                        <span>Start Tracking Free</span>
+                        <span class="btn-arrow">→</span>
+                    </a>
+                </div>
+                <p class="hero-note">✓ No credit card required  •  ✓ Free forever  •  ✓ Setup in 2 minutes</p>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="hero-image-container">
+                    <div class="floating-card performance-card">
+                        <div class="card-header">
+                            <h3>Your Performance</h3>
+                            <span class="trend-up">↑ 23%</span>
+                        </div>
+                        <div class="stat-number">$12,847.50</div>
+                        <p class="stat-label">Total Savings This Year</p>
+                        <div class="mini-chart">
+                            <div class="chart-bar" style="height: 40%"></div>
+                            <div class="chart-bar" style="height: 65%"></div>
+                            <div class="chart-bar" style="height: 85%"></div>
+                            <div class="chart-bar" style="height: 70%"></div>
+                            <div class="chart-bar" style="height: 95%"></div>
+                            <div class="chart-bar" style="height: 100%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="floating-bubble bubble-1">
+                        <div class="bubble-icon">👍</div>
+                        <div class="bubble-content">
+                            <p class="bubble-text">"Best finance app ever!"</p>
+                            <div class="bubble-stars">⭐⭐⭐⭐⭐</div>
+                            <p class="bubble-author">Sarah M.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="floating-bubble bubble-2">
+                        <div class="bubble-icon">💚</div>
+                        <div class="bubble-content">
+                            <p class="bubble-text">"Helped me save $5000!"</p>
+                            <div class="bubble-stars">⭐⭐⭐⭐⭐</div>
+                            <p class="bubble-author">John D.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Banner -->
+    <section class="stats-banner">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">$2.5M+</div>
+                    <div class="stat-label">Money Tracked</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">10K+</div>
+                    <div class="stat-label">Active Users</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">50K+</div>
+                    <div class="stat-label">Transactions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">4.9★</div>
+                    <div class="stat-label">User Rating</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header-center">
+                <h2 class="section-title">Powerful Features for Complete Control</h2>
+                <p class="section-subtitle">Everything you need to master your finances in one place</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon">📊</div>
+                    </div>
+                    <h3>Smart Transaction Tracking</h3>
+                    <p>Automatically categorize and track every dollar. See where your money goes with instant insights.</p>
+                    <a href="#" class="feature-link">Learn more →</a>
+                </div>
+                
+                <div class="feature-card feature-card-highlight">
+                    <div class="feature-badge">Most Popular</div>
+                    <div class="feature-icon-box">
+                        <div class="feature-icon">💰</div>
+                    </div>
+                    <h3>Budget Management</h3>
+                    <p>Set smart budgets that adapt to your lifestyle. Get real-time alerts before overspending.</p>
+                    <a href="#" class="feature-link">Learn more →</a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon">📈</div>
+                    </div>
+                    <h3>Visual Analytics</h3>
+                    <p>Beautiful charts and graphs that make your financial data easy to understand at a glance.</p>
+                    <a href="#" class="feature-link">Learn more →</a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon">🎯</div>
+                    </div>
+                    <h3>Financial Goals</h3>
+                    <p>Set and track goals for savings, debt payoff, or major purchases. Stay motivated!</p>
+                    <a href="#" class="feature-link">Learn more →</a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon">🔒</div>
+                    </div>
+                    <h3>Bank-Level Security</h3>
+                    <p>Your financial data is encrypted and protected with industry-standard security measures.</p>
+                    <a href="#" class="feature-link">Learn more →</a>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon-box">
+                        <div class="feature-icon">⚡</div>
+                    </div>
+                    <h3>Lightning Fast</h3>
+                    <p>Add transactions in seconds. Works seamlessly on desktop, tablet, and mobile devices.</p>
+                    <a href="#" class="feature-link">Learn more →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-header-center">
+                <h2 class="section-title">Start Tracking in 3 Simple Steps</h2>
+                <p class="section-subtitle">Get up and running in less than 2 minutes</p>
+            </div>
+            
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">
+                        <span>01</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>Create Your Free Account</h3>
+                        <p>Sign up in seconds with just your email. No credit card needed, no hidden fees ever.</p>
+                        <div class="step-features">
+                            <span class="step-check">✓ Free forever</span>
+                            <span class="step-check">✓ No setup fees</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-connector"></div>
+                
+                <div class="step">
+                    <div class="step-number">
+                        <span>02</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>Add Your Transactions</h3>
+                        <p>Quickly log income and expenses. Our smart categories make organization effortless.</p>
+                        <div class="step-features">
+                            <span class="step-check">✓ Auto-categorization</span>
+                            <span class="step-check">✓ Bulk import</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step-connector"></div>
+                
+                <div class="step">
+                    <div class="step-number">
+                        <span>03</span>
+                    </div>
+                    <div class="step-content">
+                        <h3>Watch Your Wealth Grow</h3>
+                        <p>Get instant insights with beautiful charts. Track progress and achieve your financial goals.</p>
+                        <div class="step-features">
+                            <span class="step-check">✓ Real-time reports</span>
+                            <span class="step-check">✓ Goal tracking</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="steps-cta">
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">Get Started Now - It's Free</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials">
+        <div class="container">
+            <div class="section-header-center">
+                <h2 class="section-title">Loved by Thousands of Users</h2>
+                <p class="section-subtitle">See what our users are saying about Chengeta</p>
+            </div>
+            
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">SM</div>
+                        <div>
+                            <h4>Sarah Martinez</h4>
+                            <p class="testimonial-role">Freelance Designer</p>
+                        </div>
+                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <p class="testimonial-text">"This app changed my financial life! I've saved over $5,000 in just 6 months by tracking my spending. The budget alerts are a game-changer!"</p>
+                    <div class="testimonial-date">January 15, 2025</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">JD</div>
+                        <div>
+                            <h4>John Davis</h4>
+                            <p class="testimonial-role">Software Engineer</p>
+                        </div>
+                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <p class="testimonial-text">"Finally, a finance tracker that's actually easy to use! Love the visual reports and how quickly I can add transactions. Highly recommend!"</p>
+                    <div class="testimonial-date">December 28, 2024</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">EW</div>
+                        <div>
+                            <h4>Emily Wilson</h4>
+                            <p class="testimonial-role">Marketing Manager</p>
+                        </div>
+                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <p class="testimonial-text">"Best finance app I've tried! The budget tracking feature helped me finally stick to my spending plan. Plus it's completely free - can't beat that!"</p>
+                    <div class="testimonial-date">December 10, 2024</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">MR</div>
+                        <div>
+                            <h4>Michael Roberts</h4>
+                            <p class="testimonial-role">Business Owner</p>
+                        </div>
+                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <p class="testimonial-text">"Perfect for managing both personal and business finances. The reports give me clear insights into where my money is going. Couldn't be happier!"</p>
+                    <div class="testimonial-date">November 22, 2024</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">LT</div>
+                        <div>
+                            <h4>Lisa Thompson</h4>
+                            <p class="testimonial-role">Teacher</p>
+                        </div>
+                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <p class="testimonial-text">"So simple yet powerful! I love how I can set budgets and get warnings before overspending. Helped me save for my dream vacation!"</p>
+                    <div class="testimonial-date">November 5, 2024</div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-avatar">AK</div>
+                        <div>
+                            <h4>Alex Kim</h4>
+                            <p class="testimonial-role">Student</p>
+                        </div>
+                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    </div>
+                    <p class="testimonial-text">"As a student on a tight budget, this app is essential! It's free, easy to use, and helps me make every dollar count. Thank you!"</p>
+                    <div class="testimonial-date">October 18, 2024</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to Transform Your Financial Life?</h2>
+                <p class="cta-subtitle">Join over 10,000 users who are already tracking their way to financial freedom</p>
+                <div class="cta-actions">
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-xl">
+                        <span>Start Tracking Free</span>
+                        <span class="btn-arrow">→</span>
+                    </a>
+                    <p class="cta-note">✓ No credit card required  •  ✓ Setup in 2 minutes  •  ✓ Cancel anytime</p>
+                </div>
+                <div class="cta-trust">
+                    <div class="trust-item">
+                        <span class="trust-icon">🔒</span>
+                        <span>Bank-level security</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon">⭐</span>
+                        <span>4.9/5 rating</span>
+                    </div>
+                    <div class="trust-item">
+                        <span class="trust-icon">💚</span>
+                        <span>Loved by 10K+ users</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="landing-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Chengeta Logo" class="logo-img">
+                    </div>
+                    <p>Take control of your financial future today.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Product</h4>
+                        <a href="#features">Features</a>
+                        <a href="#how-it-works">How It Works</a>
+                        <a href="#testimonials">Reviews</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Company</h4>
+                        <a href="#">About Us</a>
+                        <a href="#">Contact</a>
+                        <a href="#">Privacy Policy</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Get Started</h4>
+                        <a href="{{ url_for('auth.register') }}">Sign Up</a>
+                        <a href="{{ url_for('auth.login') }}">Log In</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Chengeta. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Smooth Scroll Script -->
+    <script>
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        if (mobileMenuToggle && mobileMenu) {
+            mobileMenuToggle.addEventListener('click', () => {
+                mobileMenuToggle.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking a link
+            mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenuToggle.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                });
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
+                    mobileMenuToggle.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                }
+            });
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navbar background on scroll
+        const navbar = document.querySelector('.landing-nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all feature cards and testimonials
+        document.querySelectorAll('.feature-card, .testimonial-card, .step').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
+

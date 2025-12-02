@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Chengeta</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <a href="{{ url_for('auth.landing') }}" class="auth-back">
+            <span class="auth-back-arrow">←</span>
+            <span>Back to home</span>
+        </a>
+        
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Chengeta Logo" class="auth-logo-img">
+                <h1>Create Your Account</h1>
+                <p>Start tracking your finances in 2 minutes - completely free!</p>
+            </div>
+
+            <div class="auth-features">
+                <h3>✨ What you'll get:</h3>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span>Unlimited transactions & budgets</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span>Beautiful visual reports & charts</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span>Smart budget alerts & insights</span>
+                </div>
+                <div class="feature-item">
+                    <span class="feature-check">✓</span>
+                    <span>Bank-level security & encryption</span>
+                </div>
+            </div>
+
+            <form id="register-form" class="auth-form">
+                <div class="form-group">
+                    <label for="full_name">Full Name (Optional)</label>
+                    <input type="text" id="full_name" name="full_name" placeholder="John Doe">
+                </div>
+
+                <div class="form-group">
+                    <label for="username">Username <span style="color: #ef4444;">*</span></label>
+                    <input type="text" id="username" name="username" required placeholder="Choose a unique username">
+                    <small>This will be your login name</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address <span style="color: #ef4444;">*</span></label>
+                    <input type="email" id="email" name="email" required placeholder="you@example.com">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password <span style="color: #ef4444;">*</span></label>
+                    <input type="password" id="password" name="password" required placeholder="At least 6 characters" minlength="6">
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="password-strength-bar"></div>
+                    </div>
+                    <small id="password-hint">Use a mix of letters, numbers & symbols</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirm_password">Confirm Password <span style="color: #ef4444;">*</span></label>
+                    <input type="password" id="confirm_password" name="confirm_password" required placeholder="Re-enter your password">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">
+                    <span>Create Free Account</span>
+                </button>
+            </form>
+
+            <div class="auth-divider">
+                <span>Already have an account?</span>
+            </div>
+
+            <div class="auth-footer">
+                <p><a href="{{ url_for('auth.login') }}">Log in to your account →</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toast-container"></div>
+
+    <script>
+        // Toast notification
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.innerHTML = `<span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.animation = 'slideIn 0.3s ease-out reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Password strength checker
+        const passwordInput = document.getElementById('password');
+        const strengthBar = document.getElementById('password-strength-bar');
+        const passwordHint = document.getElementById('password-hint');
+
+        passwordInput.addEventListener('input', (e) => {
+            const password = e.target.value;
+            let strength = 0;
+            
+            if (password.length >= 6) strength++;
+            if (password.length >= 10) strength++;
+            if (/[a-z]/.test(password) && /[A-Z]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            
+            strengthBar.className = 'password-strength-bar';
+            
+            if (strength <= 2) {
+                strengthBar.classList.add('weak');
+                passwordHint.textContent = 'Weak password - Add more characters';
+                passwordHint.style.color = '#ef4444';
+            } else if (strength <= 3) {
+                strengthBar.classList.add('medium');
+                passwordHint.textContent = 'Medium strength - Add special characters';
+                passwordHint.style.color = '#f59e0b';
+            } else {
+                strengthBar.classList.add('strong');
+                passwordHint.textContent = 'Strong password! ✓';
+                passwordHint.style.color = '#10b981';
+            }
+        });
+
+        // Handle registration form submission
+        const form = document.getElementById('register-form');
+        const submitBtn = form.querySelector('button[type="submit"]');
+        
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            
+            if (password !== confirmPassword) {
+                showToast('Passwords do not match', 'error');
+                document.getElementById('confirm_password').focus();
+                return;
+            }
+            
+            if (password.length < 6) {
+                showToast('Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            // Add loading state
+            submitBtn.classList.add('btn-loading');
+            submitBtn.disabled = true;
+            
+            const formData = {
+                full_name: document.getElementById('full_name').value,
+                username: document.getElementById('username').value,
+                email: document.getElementById('email').value,
+                password: password
+            };
+            
+            try {
+                const response = await fetch('{{ url_for("auth.register") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showToast('Account created successfully! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 1000);
+                } else {
+                    showToast(data.message, 'error');
+                    submitBtn.classList.remove('btn-loading');
+                    submitBtn.disabled = false;
+                }
+            } catch (error) {
+                showToast('An error occurred. Please try again.', 'error');
+                submitBtn.classList.remove('btn-loading');
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
+

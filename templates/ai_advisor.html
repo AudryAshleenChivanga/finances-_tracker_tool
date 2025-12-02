@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}ChengeAI - Your Financial Advisor{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ai_advisor.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="ai-advisor-page">
+    <!-- Page Header -->
+    <div class="page-header">
+        <div>
+            <h1>🤖 ChengeAI - Your Personal Financial Advisor</h1>
+            <p class="subtitle">Get instant, personalized financial advice powered by AI</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="clearChat()">Clear Chat</button>
+    </div>
+
+    <div class="ai-layout">
+        <!-- Chat Container -->
+        <div class="chat-container">
+            <div class="chat-welcome" id="chat-welcome">
+                <div class="welcome-icon">🤖</div>
+                <h2>Welcome to ChengeAI!</h2>
+                <p>I'm your personal financial advisor. Ask me anything about:</p>
+                <div class="suggestion-chips">
+                    <button class="chip" onclick="askQuestion('How can I save more money?')">
+                        💰 Saving tips
+                    </button>
+                    <button class="chip" onclick="askQuestion('What is a good budget strategy?')">
+                        📊 Budgeting advice
+                    </button>
+                    <button class="chip" onclick="askQuestion('How do I reduce debt?')">
+                        💳 Debt management
+                    </button>
+                    <button class="chip" onclick="askQuestion('Investment basics for beginners')">
+                        📈 Investment tips
+                    </button>
+                    <button class="chip" onclick="askQuestion('How to build an emergency fund?')">
+                        🛡️ Emergency funds
+                    </button>
+                    <button class="chip" onclick="askQuestion('Tips for retirement planning')">
+                        🏖️ Retirement planning
+                    </button>
+                </div>
+            </div>
+
+            <!-- Messages Area -->
+            <div class="messages-area" id="messages-area">
+                <!-- Messages will appear here -->
+            </div>
+
+            <!-- Input Area -->
+            <div class="chat-input-container">
+                <form id="chat-form" class="chat-input-form">
+                    <input 
+                        type="text" 
+                        id="chat-input" 
+                        placeholder="Ask me anything about finance..." 
+                        autocomplete="off"
+                        required
+                    >
+                    <button type="submit" class="send-btn" id="send-btn">
+                        <span class="send-icon">📤</span>
+                    </button>
+                </form>
+                <p class="chat-disclaimer">ChengeAI provides general advice. Consult a professional for specific financial planning.</p>
+            </div>
+        </div>
+
+        <!-- Quick Tips Sidebar -->
+        <div class="tips-sidebar">
+            <h3>💡 Quick Tips</h3>
+            <div class="tip-card">
+                <h4>50/30/20 Rule</h4>
+                <p>Allocate 50% needs, 30% wants, 20% savings</p>
+            </div>
+            <div class="tip-card">
+                <h4>Emergency Fund</h4>
+                <p>Save 3-6 months of expenses</p>
+            </div>
+            <div class="tip-card">
+                <h4>Pay Yourself First</h4>
+                <p>Save before you spend</p>
+            </div>
+            <div class="tip-card">
+                <h4>Track Everything</h4>
+                <p>Awareness leads to better decisions</p>
+            </div>
+            <div class="tip-card">
+                <h4>Avoid Lifestyle Inflation</h4>
+                <p>Don't increase spending with income</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/ai_advisor.js') }}"></script>
+{% endblock %}
+
