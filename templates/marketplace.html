@@ -1,0 +1,569 @@
+{% extends "base.html" %}
+
+{% block title %}Chengeta Marketplace - Financial Services & Courses{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/marketplace.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="marketplace-page">
+    <!-- Hero Section -->
+    <section class="marketplace-hero">
+        <div class="hero-content">
+            <h1>Chengeta Marketplace</h1>
+            <p>Trusted financial services and courses to grow your wealth</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">15+</span>
+                    <span class="stat-label">Partners</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5k+</span>
+                    <span class="stat-label">Users Helped</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">$50k+</span>
+                    <span class="stat-label">Saved</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="{{ url_for('static', filename='img/ChengetaMarket.png') }}" alt="Chengeta Marketplace">
+        </div>
+    </section>
+
+    <!-- Category Tabs -->
+    <div class="category-tabs">
+        <button class="tab active" data-category="all">All Services</button>
+        <button class="tab" data-category="banking">Banking & Savings</button>
+        <button class="tab" data-category="insurance">Insurance</button>
+        <button class="tab" data-category="investment">Investments</button>
+        <button class="tab" data-category="loans">Microloans</button>
+        <button class="tab" data-category="courses">Courses</button>
+    </div>
+
+    <!-- Services Grid -->
+    <section class="services-section">
+        <div class="services-grid" id="servicesGrid">
+            
+            <!-- BANKING & SAVINGS -->
+            <div class="service-card" data-category="banking">
+                <div class="card-badge popular">Popular</div>
+                <div class="card-logo">
+                    <div class="logo-placeholder ecocash">EC</div>
+                </div>
+                <h3>EcoCash Save</h3>
+                <p class="provider">Econet Wireless</p>
+                <p class="description">Save directly from your mobile money. Earn up to 7% interest annually on your savings.</p>
+                <div class="card-features">
+                    <span class="feature">Mobile Money</span>
+                    <span class="feature">7% Interest</span>
+                    <span class="feature">Instant Access</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">4.8 (2.3k reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('ecocash-save', 'banking')">
+                    Open Account
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="service-card" data-category="banking">
+                <div class="card-logo">
+                    <div class="logo-placeholder fnb">FNB</div>
+                </div>
+                <h3>FNB Smart Save</h3>
+                <p class="provider">First National Bank</p>
+                <p class="description">Automated savings with goal tracking. Set targets and watch your money grow with competitive rates.</p>
+                <div class="card-features">
+                    <span class="feature">Goal Tracking</span>
+                    <span class="feature">Auto-Save</span>
+                    <span class="feature">No Fees</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-text">4.5 (1.8k reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('fnb-smart-save', 'banking')">
+                    Get Started
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="service-card" data-category="banking">
+                <div class="card-logo">
+                    <div class="logo-placeholder steward">SB</div>
+                </div>
+                <h3>Steward Bank Savings</h3>
+                <p class="provider">Steward Bank</p>
+                <p class="description">Flexible savings accounts with mobile banking. Access your funds anytime via ZIPIT or EcoCash.</p>
+                <div class="card-features">
+                    <span class="feature">Mobile Banking</span>
+                    <span class="feature">ZIPIT</span>
+                    <span class="feature">Low Minimum</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-text">4.3 (950 reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('steward-savings', 'banking')">
+                    Open Account
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="service-card" data-category="banking">
+                <div class="card-logo">
+                    <div class="logo-placeholder cabs">CABS</div>
+                </div>
+                <h3>CABS Flexi-Save</h3>
+                <p class="provider">CABS Bank</p>
+                <p class="description">Earn while you save with tiered interest rates. Higher balances earn more rewards.</p>
+                <div class="card-features">
+                    <span class="feature">Tiered Interest</span>
+                    <span class="feature">Rewards</span>
+                    <span class="feature">24/7 Access</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-text">4.4 (1.2k reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('cabs-flexi', 'banking')">
+                    Learn More
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- INSURANCE -->
+            <div class="service-card" data-category="insurance">
+                <div class="card-badge recommended">Recommended</div>
+                <div class="card-logo">
+                    <div class="logo-placeholder oldmutual">OM</div>
+                </div>
+                <h3>Old Mutual Life Cover</h3>
+                <p class="provider">Old Mutual Zimbabwe</p>
+                <p class="description">Protect your family's future. Affordable life insurance with funeral benefits included.</p>
+                <div class="card-features">
+                    <span class="feature">Life Cover</span>
+                    <span class="feature">Funeral Benefit</span>
+                    <span class="feature">From $5/month</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">4.9 (3.1k reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('oldmutual-life', 'insurance')">
+                    Get Quote
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="service-card" data-category="insurance">
+                <div class="card-logo">
+                    <div class="logo-placeholder nyaradzo">NY</div>
+                </div>
+                <h3>Nyaradzo Funeral Plan</h3>
+                <p class="provider">Nyaradzo Group</p>
+                <p class="description">Comprehensive funeral cover for you and your extended family. Peace of mind when you need it most.</p>
+                <div class="card-features">
+                    <span class="feature">Family Cover</span>
+                    <span class="feature">Extended Family</span>
+                    <span class="feature">Instant Payout</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">4.8 (2.7k reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('nyaradzo-funeral', 'insurance')">
+                    View Plans
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="service-card" data-category="insurance">
+                <div class="card-logo">
+                    <div class="logo-placeholder firstmutual">FM</div>
+                </div>
+                <h3>First Mutual Health</h3>
+                <p class="provider">First Mutual Health</p>
+                <p class="description">Medical aid for individuals and families. Access quality healthcare at top hospitals.</p>
+                <div class="card-features">
+                    <span class="feature">Medical Aid</span>
+                    <span class="feature">Hospital Cover</span>
+                    <span class="feature">Chronic Illness</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-text">4.6 (1.5k reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('firstmutual-health', 'insurance')">
+                    Compare Plans
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- INVESTMENTS -->
+            <div class="service-card" data-category="investment">
+                <div class="card-badge new">New</div>
+                <div class="card-logo">
+                    <div class="logo-placeholder imara">IM</div>
+                </div>
+                <h3>Imara Asset Management</h3>
+                <p class="provider">Imara Holdings</p>
+                <p class="description">Professional investment management. Grow your wealth with expert portfolio managers.</p>
+                <div class="card-features">
+                    <span class="feature">Unit Trusts</span>
+                    <span class="feature">Expert Management</span>
+                    <span class="feature">From $50</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">4.7 (890 reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('imara-invest', 'investment')">
+                    Start Investing
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="service-card" data-category="investment">
+                <div class="card-logo">
+                    <div class="logo-placeholder zse">ZSE</div>
+                </div>
+                <h3>ZSE Direct</h3>
+                <p class="provider">Zimbabwe Stock Exchange</p>
+                <p class="description">Buy shares directly on the Zimbabwe Stock Exchange. Build wealth through stock ownership.</p>
+                <div class="card-features">
+                    <span class="feature">Stocks</span>
+                    <span class="feature">Dividends</span>
+                    <span class="feature">Capital Growth</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-text">4.4 (650 reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('zse-direct', 'investment')">
+                    Open Account
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="service-card" data-category="investment">
+                <div class="card-logo">
+                    <div class="logo-placeholder getbucks">GB</div>
+                </div>
+                <h3>GetBucks Money Market</h3>
+                <p class="provider">GetBucks Financial</p>
+                <p class="description">Low-risk investment with steady returns. Perfect for conservative investors.</p>
+                <div class="card-features">
+                    <span class="feature">Money Market</span>
+                    <span class="feature">Low Risk</span>
+                    <span class="feature">Daily Interest</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-text">4.3 (520 reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('getbucks-mm', 'investment')">
+                    Learn More
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- MICROLOANS -->
+            <div class="service-card" data-category="loans">
+                <div class="card-badge ethical">Ethical Lender</div>
+                <div class="card-logo">
+                    <div class="logo-placeholder kiva">KV</div>
+                </div>
+                <h3>Kiva Microloans</h3>
+                <p class="provider">Kiva.org</p>
+                <p class="description">0% interest microloans for entrepreneurs. Grow your business without the burden of high interest.</p>
+                <div class="card-features">
+                    <span class="feature">0% Interest</span>
+                    <span class="feature">Business Loans</span>
+                    <span class="feature">Flexible Terms</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">4.9 (5.2k reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('kiva-loans', 'loans')">
+                    Apply Now
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="service-card" data-category="loans">
+                <div class="card-logo">
+                    <div class="logo-placeholder getbucks-loan">GB</div>
+                </div>
+                <h3>GetBucks Quick Loan</h3>
+                <p class="provider">GetBucks Financial</p>
+                <p class="description">Emergency cash when you need it. Quick approval with transparent terms.</p>
+                <div class="card-features">
+                    <span class="feature">Quick Approval</span>
+                    <span class="feature">Mobile App</span>
+                    <span class="feature">Clear Terms</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-text">4.2 (1.8k reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('getbucks-loan', 'loans')">
+                    Check Eligibility
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="service-card" data-category="loans">
+                <div class="card-logo">
+                    <div class="logo-placeholder mukuru">MK</div>
+                </div>
+                <h3>Mukuru Advance</h3>
+                <p class="provider">Mukuru</p>
+                <p class="description">Salary advance for employed individuals. Bridge the gap before payday.</p>
+                <div class="card-features">
+                    <span class="feature">Salary Advance</span>
+                    <span class="feature">Same Day</span>
+                    <span class="feature">No Collateral</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-text">4.4 (2.1k reviews)</span>
+                </div>
+                <a href="#" class="btn-apply" onclick="trackClick('mukuru-advance', 'loans')">
+                    Get Advance
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <!-- COURSES -->
+            <div class="service-card course-card" data-category="courses">
+                <div class="card-badge bestseller">Bestseller</div>
+                <div class="card-image">
+                    <img src="{{ url_for('static', filename='img/financecard.avif') }}" alt="Budgeting Mastery">
+                    <div class="course-overlay">
+                        <span class="course-duration">4 Hours</span>
+                    </div>
+                </div>
+                <h3>Budgeting Mastery</h3>
+                <p class="provider">Chengeta Academy</p>
+                <p class="description">Master the art of budgeting. Learn proven techniques to take control of your money.</p>
+                <div class="course-meta">
+                    <span class="lessons">12 Lessons</span>
+                    <span class="students">2.3k students</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">4.9 (456 reviews)</span>
+                </div>
+                <div class="course-price">
+                    <span class="original-price">$29</span>
+                    <span class="sale-price">$15</span>
+                </div>
+                <a href="#" class="btn-apply btn-course" onclick="trackClick('course-budgeting', 'courses')">
+                    Enroll Now
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="service-card course-card" data-category="courses">
+                <div class="card-image">
+                    <img src="{{ url_for('static', filename='img/money-trees.avif') }}" alt="Investing for Beginners">
+                    <div class="course-overlay">
+                        <span class="course-duration">6 Hours</span>
+                    </div>
+                </div>
+                <h3>Investing for Beginners</h3>
+                <p class="provider">Chengeta Academy</p>
+                <p class="description">Start your investment journey. Learn stocks, bonds, and building wealth for the long term.</p>
+                <div class="course-meta">
+                    <span class="lessons">18 Lessons</span>
+                    <span class="students">1.8k students</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">4.8 (312 reviews)</span>
+                </div>
+                <div class="course-price">
+                    <span class="original-price">$39</span>
+                    <span class="sale-price">$20</span>
+                </div>
+                <a href="#" class="btn-apply btn-course" onclick="trackClick('course-investing', 'courses')">
+                    Enroll Now
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="service-card course-card" data-category="courses">
+                <div class="card-badge new">New</div>
+                <div class="card-image">
+                    <img src="{{ url_for('static', filename='img/financialfreedom.webp') }}" alt="Debt Freedom Blueprint">
+                    <div class="course-overlay">
+                        <span class="course-duration">5 Hours</span>
+                    </div>
+                </div>
+                <h3>Debt Freedom Blueprint</h3>
+                <p class="provider">Chengeta Academy</p>
+                <p class="description">Break free from debt forever. Proven strategies to eliminate debt and stay debt-free.</p>
+                <div class="course-meta">
+                    <span class="lessons">15 Lessons</span>
+                    <span class="students">980 students</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-text">4.9 (189 reviews)</span>
+                </div>
+                <div class="course-price">
+                    <span class="original-price">$35</span>
+                    <span class="sale-price">$18</span>
+                </div>
+                <a href="#" class="btn-apply btn-course" onclick="trackClick('course-debt', 'courses')">
+                    Enroll Now
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="service-card course-card" data-category="courses">
+                <div class="card-image">
+                    <img src="{{ url_for('static', filename='img/digital-piggybank.avif') }}" alt="Emergency Fund Essentials">
+                    <div class="course-overlay">
+                        <span class="course-duration">2 Hours</span>
+                    </div>
+                </div>
+                <h3>Emergency Fund Essentials</h3>
+                <p class="provider">Chengeta Academy</p>
+                <p class="description">Build your financial safety net. Learn to save 3-6 months of expenses quickly.</p>
+                <div class="course-meta">
+                    <span class="lessons">8 Lessons</span>
+                    <span class="students">1.5k students</span>
+                </div>
+                <div class="card-rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-text">4.7 (234 reviews)</span>
+                </div>
+                <div class="course-price">
+                    <span class="original-price">$19</span>
+                    <span class="sale-price">$10</span>
+                </div>
+                <a href="#" class="btn-apply btn-course" onclick="trackClick('course-emergency', 'courses')">
+                    Enroll Now
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="trust-section">
+        <h2>Why Choose Chengeta Partners?</h2>
+        <div class="trust-grid">
+            <div class="trust-item">
+                <div class="trust-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                </div>
+                <h3>Vetted Partners</h3>
+                <p>All partners are thoroughly vetted for reliability and ethical practices</p>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 6v6l4 2"/>
+                    </svg>
+                </div>
+                <h3>Quick Process</h3>
+                <p>Apply online and get approved within minutes to hours</p>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+                    </svg>
+                </div>
+                <h3>Best Rates</h3>
+                <p>Exclusive rates and offers negotiated for Chengeta users</p>
+            </div>
+            <div class="trust-item">
+                <div class="trust-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                    </svg>
+                </div>
+                <h3>Support</h3>
+                <p>Our team helps you choose the right services for your needs</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Need Help Choosing?</h2>
+            <p>Chat with our AI advisor to find the best financial services for your situation</p>
+            <a href="{{ url_for('ai_advisor_page') }}" class="btn-cta">
+                Talk to ChengeAI
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+</div>
+
+<!-- Click Tracking Toast -->
+<div id="trackingToast" class="tracking-toast">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+        <polyline points="22 4 12 14.01 9 11.01"/>
+    </svg>
+    <span>Redirecting to partner...</span>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/marketplace.js') }}"></script>
+{% endblock %}
+

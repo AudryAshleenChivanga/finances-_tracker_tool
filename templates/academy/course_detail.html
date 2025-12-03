@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course.title }} - Chengeta Academy{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/academy.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="course-detail-page">
+    <!-- Course Header -->
+    <section class="course-header">
+        <div class="header-content">
+            <div class="breadcrumb">
+                <a href="{{ url_for('academy.courses') }}">Academy</a>
+                <span>/</span>
+                <a href="{{ url_for('academy.courses') }}?category={{ course.category }}">{{ course.category|title }}</a>
+            </div>
+            <h1>{{ course.title }}</h1>
+            <p class="course-tagline">{{ course.short_description }}</p>
+            
+            <div class="course-stats">
+                <span class="stat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    {{ course.average_rating or '4.8' }} rating
+                </span>
+                <span class="stat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
+                    </svg>
+                    {{ course.total_students }} students
+                </span>
+                <span class="stat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                    </svg>
+                    {{ course.duration_hours }} hours
+                </span>
+                <span class="stat">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+                    </svg>
+                    {{ lessons|length }} lessons
+                </span>
+            </div>
+
+            <div class="course-tags">
+                <span class="tag level-{{ course.level }}">{{ course.level|title }}</span>
+                {% for topic in course.get_topics()[:4] %}
+                <span class="tag">{{ topic }}</span>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="header-card">
+            <div class="card-preview">
+                {% if course.thumbnail %}
+                <img src="{{ course.thumbnail }}" alt="{{ course.title }}">
+                {% else %}
+                <img src="{{ url_for('static', filename='img/financecard.avif') }}" alt="{{ course.title }}">
+                {% endif %}
+                {% if course.preview_video %}
+                <button class="play-preview" onclick="playPreview()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    Preview Course
+                </button>
+                {% endif %}
+            </div>
+            
+            <div class="card-pricing">
+                {% if course.price == 0 %}
+                <div class="price free">Free</div>
+                {% else %}
+                {% if course.original_price %}
+                <div class="price-original">${{ course.original_price }}</div>
+                {% endif %}
+                <div class="price">${{ course.price }}</div>
+                {% endif %}
+            </div>
+            
+            {% if enrollment %}
+            <a href="{{ url_for('academy.learn', slug=course.slug) }}" class="btn-enroll btn-continue">
+                Continue Learning
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+            <div class="progress-info">
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ enrollment.progress_percent }}%"></div>
+                </div>
+                <span>{{ enrollment.progress_percent }}% complete</span>
+            </div>
+            {% else %}
+            <form action="{{ url_for('academy.enroll', course_id=course.id) }}" method="POST">
+                <button type="submit" class="btn-enroll">
+                    {% if course.price == 0 %}
+                    Enroll for Free
+                    {% else %}
+                    Enroll Now
+                    {% endif %}
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </form>
+            {% endif %}
+            
+            <div class="card-features">
+                <div class="feature">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    Lifetime access
+                </div>
+                <div class="feature">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                    </svg>
+                    Watch on any device
+                </div>
+                <div class="feature">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                    Certificate on completion
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Content -->
+    <section class="course-content">
+        <div class="content-main">
+            <!-- Description -->
+            <div class="content-section">
+                <h2>About This Course</h2>
+                <div class="description">
+                    {{ course.description|safe }}
+                </div>
+            </div>
+
+            <!-- What You'll Learn -->
+            {% if course.get_learning_outcomes() %}
+            <div class="content-section">
+                <h2>What You'll Learn</h2>
+                <div class="outcomes-grid">
+                    {% for outcome in course.get_learning_outcomes() %}
+                    <div class="outcome">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                        <span>{{ outcome }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Curriculum -->
+            <div class="content-section">
+                <h2>Course Curriculum</h2>
+                <div class="curriculum">
+                    {% for lesson in lessons %}
+                    <div class="lesson-item {{ 'free-preview' if lesson.is_free_preview }}">
+                        <div class="lesson-info">
+                            <span class="lesson-number">{{ loop.index }}</span>
+                            <div class="lesson-details">
+                                <h4>{{ lesson.title }}</h4>
+                                {% if lesson.description %}
+                                <p>{{ lesson.description[:100] }}...</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="lesson-meta">
+                            {% if lesson.is_free_preview %}
+                            <span class="preview-badge">Free Preview</span>
+                            {% endif %}
+                            <span class="duration">{{ lesson.duration_minutes }} min</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Requirements -->
+            {% if course.get_requirements() %}
+            <div class="content-section">
+                <h2>Requirements</h2>
+                <ul class="requirements-list">
+                    {% for req in course.get_requirements() %}
+                    <li>{{ req }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="content-sidebar">
+            <div class="sidebar-card">
+                <h3>This Course Includes</h3>
+                <ul class="includes-list">
+                    <li>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+                        </svg>
+                        {{ course.duration_hours }} hours of video
+                    </li>
+                    <li>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
+                        </svg>
+                        {{ lessons|length }} lessons
+                    </li>
+                    <li>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Downloadable resources
+                    </li>
+                    <li>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                        Lifetime access
+                    </li>
+                    <li>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                        </svg>
+                        Certificate of completion
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+

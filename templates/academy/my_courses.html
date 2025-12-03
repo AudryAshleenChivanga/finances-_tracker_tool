@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %}My Courses - Chengeta Academy{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/academy.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="my-courses-page">
+    <div class="page-header">
+        <h1>My Learning</h1>
+        <a href="{{ url_for('academy.courses') }}" class="btn-browse">Browse More Courses</a>
+    </div>
+
+    <!-- In Progress -->
+    <section class="courses-section">
+        <h2>Continue Learning</h2>
+        {% if in_progress %}
+        <div class="enrolled-grid">
+            {% for enrollment in in_progress %}
+            <div class="enrolled-card">
+                <div class="card-image">
+                    {% if enrollment.course.thumbnail %}
+                    <img src="{{ enrollment.course.thumbnail }}" alt="{{ enrollment.course.title }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='img/financecard.avif') }}" alt="{{ enrollment.course.title }}">
+                    {% endif %}
+                    <div class="progress-overlay">
+                        <div class="progress-circle" style="--progress: {{ enrollment.progress_percent }}">
+                            <span>{{ enrollment.progress_percent|int }}%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3>{{ enrollment.course.title }}</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: {{ enrollment.progress_percent }}%"></div>
+                    </div>
+                    <p class="progress-text">{{ enrollment.lessons_completed }} of {{ enrollment.course.get_total_lessons() }} lessons completed</p>
+                    <a href="{{ url_for('academy.learn', slug=enrollment.course.slug) }}" class="btn-continue">
+                        Continue
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            <h3>No courses in progress</h3>
+            <p>Start learning something new today!</p>
+            <a href="{{ url_for('academy.courses') }}" class="btn-primary">Browse Courses</a>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- Completed -->
+    {% if completed %}
+    <section class="courses-section">
+        <h2>Completed Courses</h2>
+        <div class="enrolled-grid">
+            {% for enrollment in completed %}
+            <div class="enrolled-card completed">
+                <div class="card-image">
+                    {% if enrollment.course.thumbnail %}
+                    <img src="{{ enrollment.course.thumbnail }}" alt="{{ enrollment.course.title }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='img/financecard.avif') }}" alt="{{ enrollment.course.title }}">
+                    {% endif %}
+                    <div class="completed-badge">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <h3>{{ enrollment.course.title }}</h3>
+                    <p class="completed-date">Completed on {{ enrollment.completed_at.strftime('%B %d, %Y') if enrollment.completed_at else 'N/A' }}</p>
+                    <div class="card-actions">
+                        <a href="{{ url_for('academy.learn', slug=enrollment.course.slug) }}" class="btn-review">Review</a>
+                        <a href="{{ url_for('academy.certificate', enrollment_id=enrollment.id) }}" class="btn-certificate">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                            </svg>
+                            Certificate
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</div>
+{% endblock %}
+

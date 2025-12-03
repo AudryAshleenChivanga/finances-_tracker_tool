@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+
+{% block title %}{{ quiz.title }} - Chengeta Academy{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/academy.css') }}">
+<style>
+    .quiz-page {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .quiz-header {
+        background: linear-gradient(135deg, #1a1a2e, #16213e);
+        padding: 2rem;
+        border-radius: 16px;
+        color: #fff;
+        margin-bottom: 2rem;
+    }
+    
+    .quiz-header h1 {
+        margin-bottom: 0.5rem;
+    }
+    
+    .quiz-meta {
+        display: flex;
+        gap: 2rem;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.7);
+    }
+    
+    .quiz-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .question-card {
+        background: #fff;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .question-number {
+        display: inline-block;
+        background: linear-gradient(135deg, #00d4aa, #00a8cc);
+        color: #fff;
+        padding: 0.3rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+    }
+    
+    .question-text {
+        font-size: 1.1rem;
+        color: #1a1a2e;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+    
+    .options-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .option-label {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        background: #f8f9fa;
+        border: 2px solid transparent;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .option-label:hover {
+        background: #f0fdf4;
+        border-color: #00d4aa;
+    }
+    
+    .option-label input {
+        display: none;
+    }
+    
+    .option-label input:checked + .option-indicator {
+        background: #00d4aa;
+        border-color: #00d4aa;
+    }
+    
+    .option-label input:checked + .option-indicator::after {
+        content: '✓';
+        color: #fff;
+    }
+    
+    .option-label input:checked ~ .option-text {
+        font-weight: 500;
+    }
+    
+    .option-indicator {
+        width: 24px;
+        height: 24px;
+        border: 2px solid #ddd;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+    }
+    
+    .option-text {
+        flex: 1;
+    }
+    
+    .short-answer-input {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid #ddd;
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: border-color 0.2s;
+    }
+    
+    .short-answer-input:focus {
+        outline: none;
+        border-color: #00d4aa;
+    }
+    
+    .quiz-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid #eee;
+    }
+    
+    .btn-submit {
+        padding: 1rem 2.5rem;
+        background: linear-gradient(135deg, #00d4aa, #00a8cc);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,212,170,0.4);
+    }
+    
+    .btn-back {
+        color: #666;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .progress-indicator {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    .progress-dot {
+        width: 10px;
+        height: 10px;
+        background: #e5e7eb;
+        border-radius: 50%;
+    }
+    
+    .progress-dot.answered {
+        background: #00d4aa;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="quiz-page">
+    <div class="quiz-header">
+        <a href="{{ url_for('academy.learn', slug=lesson.course.slug, lesson=lesson.id) }}" class="btn-back" style="color: rgba(255,255,255,0.7); margin-bottom: 1rem; display: inline-flex;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Lesson
+        </a>
+        <h1>{{ quiz.title }}</h1>
+        {% if quiz.description %}
+        <p>{{ quiz.description }}</p>
+        {% endif %}
+        <div class="quiz-meta">
+            <span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                {{ questions|length }} Questions
+            </span>
+            <span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                {{ quiz.passing_score }}% to Pass
+            </span>
+            <span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+                </svg>
+                {{ attempts_remaining }} Attempts Left
+            </span>
+        </div>
+    </div>
+
+    <div class="progress-indicator" id="progressDots">
+        {% for q in questions %}
+        <div class="progress-dot" data-question="{{ q.id }}"></div>
+        {% endfor %}
+    </div>
+
+    <form action="{{ url_for('academy.submit_quiz', quiz_id=quiz.id) }}" method="POST" id="quizForm">
+        {% for question in questions %}
+        <div class="question-card" data-question-id="{{ question.id }}">
+            <span class="question-number">Question {{ loop.index }}</span>
+            <p class="question-text">{{ question.question_text }}</p>
+            
+            {% if question.question_type in ['multiple_choice', 'true_false'] %}
+            <div class="options-list">
+                {% for option in question.get_options() %}
+                <label class="option-label">
+                    <input type="radio" name="question_{{ question.id }}" value="{{ loop.index0 }}" onchange="markAnswered({{ question.id }})">
+                    <span class="option-indicator"></span>
+                    <span class="option-text">{{ option.text }}</span>
+                </label>
+                {% endfor %}
+            </div>
+            {% else %}
+            <input type="text" name="question_{{ question.id }}" class="short-answer-input" 
+                   placeholder="Type your answer here..." onchange="markAnswered({{ question.id }})">
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <div class="quiz-footer">
+            <a href="{{ url_for('academy.learn', slug=lesson.course.slug, lesson=lesson.id) }}" class="btn-back">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                Save & Exit
+            </a>
+            <button type="submit" class="btn-submit" onclick="return confirmSubmit()">
+                Submit Quiz
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline; vertical-align: middle; margin-left: 0.5rem;">
+                    <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+function markAnswered(questionId) {
+    const dot = document.querySelector(`.progress-dot[data-question="${questionId}"]`);
+    if (dot) {
+        dot.classList.add('answered');
+    }
+}
+
+function confirmSubmit() {
+    const totalQuestions = {{ questions|length }};
+    const answeredQuestions = document.querySelectorAll('.progress-dot.answered').length;
+    
+    if (answeredQuestions < totalQuestions) {
+        return confirm(`You have only answered ${answeredQuestions} of ${totalQuestions} questions. Are you sure you want to submit?`);
+    }
+    return true;
+}
+</script>
+{% endblock %}
+

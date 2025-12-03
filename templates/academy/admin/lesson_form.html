@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Lesson - {{ lesson.title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/academy.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+    <div class="admin-header">
+        <a href="{{ url_for('academy.manage_lessons', course_id=lesson.course_id) }}" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Lessons
+        </a>
+        <h1>Edit Lesson</h1>
+    </div>
+
+    <form method="POST" class="course-form">
+        <div class="form-grid">
+            <div class="form-main">
+                <div class="form-section">
+                    <h3>Lesson Details</h3>
+                    
+                    <div class="form-group">
+                        <label for="title">Lesson Title *</label>
+                        <input type="text" id="title" name="title" required 
+                               value="{{ lesson.title }}"
+                               placeholder="e.g., Introduction to Budgeting">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="4"
+                                  placeholder="Brief description of what this lesson covers">{{ lesson.description or '' }}</textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="content_type">Content Type</label>
+                            <select id="content_type" name="content_type">
+                                <option value="video" {{ 'selected' if lesson.content_type == 'video' }}>Video</option>
+                                <option value="text" {{ 'selected' if lesson.content_type == 'text' }}>Text/Article</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="duration_minutes">Duration (minutes)</label>
+                            <input type="number" id="duration_minutes" name="duration_minutes" min="0"
+                                   value="{{ lesson.duration_minutes or 0 }}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section" id="videoSection">
+                    <h3>Video Content</h3>
+                    
+                    <div class="form-group">
+                        <label for="video_url">Video URL</label>
+                        <input type="url" id="video_url" name="video_url" 
+                               value="{{ lesson.video_url or '' }}"
+                               placeholder="YouTube or Vimeo URL">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="video_provider">Video Provider</label>
+                        <select id="video_provider" name="video_provider">
+                            <option value="youtube" {{ 'selected' if lesson.video_provider == 'youtube' }}>YouTube</option>
+                            <option value="vimeo" {{ 'selected' if lesson.video_provider == 'vimeo' }}>Vimeo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-section" id="textSection" style="display: {{ 'block' if lesson.content_type == 'text' else 'none' }}">
+                    <h3>Text Content</h3>
+                    
+                    <div class="form-group">
+                        <label for="text_content">Content (Markdown/HTML supported)</label>
+                        <textarea id="text_content" name="text_content" rows="15"
+                                  placeholder="Write your lesson content here...">{{ lesson.text_content or '' }}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-sidebar">
+                <div class="form-section">
+                    <h3>Settings</h3>
+                    
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="is_free_preview" {{ 'checked' if lesson.is_free_preview }}>
+                            Free Preview
+                        </label>
+                        <small>Allow non-enrolled users to view this lesson</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="is_published" {{ 'checked' if lesson.is_published }}>
+                            Published
+                        </label>
+                        <small>Make this lesson visible to enrolled students</small>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">Save Changes</button>
+                    <a href="{{ url_for('academy.manage_lessons', course_id=lesson.course_id) }}" class="btn-lessons">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+document.getElementById('content_type').addEventListener('change', function() {
+    const videoSection = document.getElementById('videoSection');
+    const textSection = document.getElementById('textSection');
+    
+    if (this.value === 'video') {
+        videoSection.style.display = 'block';
+        textSection.style.display = 'none';
+    } else {
+        videoSection.style.display = 'none';
+        textSection.style.display = 'block';
+    }
+});
+</script>
+{% endblock %}
+

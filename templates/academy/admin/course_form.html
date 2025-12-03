@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}{{ 'Edit' if course else 'Create' }} Course - Chengeta Academy{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/academy.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+    <div class="admin-header">
+        <a href="{{ url_for('academy.admin_dashboard') }}" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Dashboard
+        </a>
+        <h1>{{ 'Edit Course' if course else 'Create New Course' }}</h1>
+    </div>
+
+    <form method="POST" class="course-form">
+        <div class="form-grid">
+            <!-- Main Content -->
+            <div class="form-main">
+                <div class="form-section">
+                    <h3>Basic Information</h3>
+                    
+                    <div class="form-group">
+                        <label for="title">Course Title *</label>
+                        <input type="text" id="title" name="title" required 
+                               value="{{ course.title if course else '' }}"
+                               placeholder="e.g., Budgeting Mastery: Take Control of Your Money">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="short_description">Short Description</label>
+                        <input type="text" id="short_description" name="short_description" 
+                               value="{{ course.short_description if course else '' }}"
+                               placeholder="A brief tagline for your course (max 150 characters)"
+                               maxlength="150">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Full Description *</label>
+                        <textarea id="description" name="description" rows="8" required
+                                  placeholder="Describe what students will learn in detail...">{{ course.description if course else '' }}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Course Details</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="category">Category</label>
+                            <select id="category" name="category">
+                                <option value="budgeting" {{ 'selected' if course and course.category == 'budgeting' }}>Budgeting</option>
+                                <option value="investing" {{ 'selected' if course and course.category == 'investing' }}>Investing</option>
+                                <option value="savings" {{ 'selected' if course and course.category == 'savings' }}>Savings</option>
+                                <option value="debt" {{ 'selected' if course and course.category == 'debt' }}>Debt Freedom</option>
+                                <option value="mindset" {{ 'selected' if course and course.category == 'mindset' }}>Money Mindset</option>
+                                <option value="general" {{ 'selected' if course and course.category == 'general' }}>General</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="level">Level</label>
+                            <select id="level" name="level">
+                                <option value="beginner" {{ 'selected' if course and course.level == 'beginner' }}>Beginner</option>
+                                <option value="intermediate" {{ 'selected' if course and course.level == 'intermediate' }}>Intermediate</option>
+                                <option value="advanced" {{ 'selected' if course and course.level == 'advanced' }}>Advanced</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="topics">Topics (comma-separated)</label>
+                        <input type="text" id="topics" name="topics" 
+                               value="{{ course.get_topics()|join(', ') if course else '' }}"
+                               placeholder="e.g., Budgeting, Saving, Emergency Fund, Financial Planning">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Learning Outcomes</h3>
+                    <div class="form-group">
+                        <label for="learning_outcomes">What will students learn? (one per line)</label>
+                        <textarea id="learning_outcomes" name="learning_outcomes" rows="5"
+                                  placeholder="Create and stick to a monthly budget&#10;Build an emergency fund&#10;Reduce unnecessary expenses&#10;Set and achieve financial goals">{{ course.get_learning_outcomes()|join('\n') if course else '' }}</textarea>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Requirements</h3>
+                    <div class="form-group">
+                        <label for="requirements">What do students need? (one per line)</label>
+                        <textarea id="requirements" name="requirements" rows="4"
+                                  placeholder="No prior financial knowledge required&#10;A willingness to learn&#10;Pen and paper for exercises">{{ course.get_requirements()|join('\n') if course else '' }}</textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="form-sidebar">
+                <div class="form-section">
+                    <h3>Pricing</h3>
+                    
+                    <div class="form-group">
+                        <label for="price">Price (USD)</label>
+                        <div class="input-with-prefix">
+                            <span class="prefix">$</span>
+                            <input type="number" id="price" name="price" step="0.01" min="0"
+                                   value="{{ course.price if course else 0 }}"
+                                   placeholder="0.00">
+                        </div>
+                        <small>Set to 0 for free courses</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="original_price">Original Price (for discount display)</label>
+                        <div class="input-with-prefix">
+                            <span class="prefix">$</span>
+                            <input type="number" id="original_price" name="original_price" step="0.01" min="0"
+                                   value="{{ course.original_price if course and course.original_price else '' }}"
+                                   placeholder="Optional">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Media</h3>
+                    
+                    <div class="form-group">
+                        <label for="thumbnail">Thumbnail URL</label>
+                        <input type="url" id="thumbnail" name="thumbnail" 
+                               value="{{ course.thumbnail if course else '' }}"
+                               placeholder="https://...">
+                        <small>Recommended: 1280x720px</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="preview_video">Preview Video URL</label>
+                        <input type="url" id="preview_video" name="preview_video" 
+                               value="{{ course.preview_video if course else '' }}"
+                               placeholder="YouTube or Vimeo URL">
+                    </div>
+                </div>
+
+                {% if course %}
+                <div class="form-section">
+                    <h3>Status</h3>
+                    <div class="status-info">
+                        <span class="status-badge {{ 'published' if course.is_published else 'draft' }}">
+                            {{ 'Published' if course.is_published else 'Draft' }}
+                        </span>
+                        <p>{{ course.total_students }} students enrolled</p>
+                    </div>
+                    <form action="{{ url_for('academy.publish_course', course_id=course.id) }}" method="POST" style="margin-top: 1rem;">
+                        <button type="submit" class="btn-publish">
+                            {{ 'Unpublish' if course.is_published else 'Publish Course' }}
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-save">
+                        {{ 'Save Changes' if course else 'Create Course' }}
+                    </button>
+                    {% if course %}
+                    <a href="{{ url_for('academy.manage_lessons', course_id=course.id) }}" class="btn-lessons">
+                        Manage Lessons
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

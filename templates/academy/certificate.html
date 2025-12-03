@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificate - {{ enrollment.course.title }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .certificate-actions {
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-family: 'Arial', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-print {
+            background: #00d4aa;
+            color: #fff;
+        }
+        
+        .btn-back {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .certificate {
+            width: 900px;
+            background: #fff;
+            padding: 3rem;
+            border: 20px solid #1a1a2e;
+            position: relative;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.1);
+        }
+        
+        .certificate::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid #00d4aa;
+            pointer-events: none;
+        }
+        
+        .certificate-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #00d4aa;
+            margin-bottom: 0.5rem;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        .subtitle {
+            font-size: 0.9rem;
+            color: #888;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        
+        .certificate-body {
+            text-align: center;
+            padding: 2rem 0;
+        }
+        
+        .presents {
+            font-size: 1rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+        
+        .certificate-title {
+            font-size: 3rem;
+            color: #1a1a2e;
+            margin-bottom: 2rem;
+            font-style: italic;
+        }
+        
+        .recipient-name {
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #00d4aa;
+            padding-bottom: 0.5rem;
+            display: inline-block;
+        }
+        
+        .completion-text {
+            font-size: 1.1rem;
+            color: #555;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        
+        .course-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1a1a2e;
+            margin: 1rem 0;
+        }
+        
+        .certificate-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .footer-item {
+            text-align: center;
+        }
+        
+        .signature-line {
+            width: 200px;
+            border-bottom: 1px solid #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-label {
+            font-size: 0.85rem;
+            color: #888;
+        }
+        
+        .certificate-id {
+            font-family: 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: #888;
+            position: absolute;
+            bottom: 1.5rem;
+            right: 2rem;
+        }
+        
+        .seal {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #00d4aa, #00a8cc);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            font-family: 'Arial', sans-serif;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        
+        @media print {
+            body {
+                background: #fff;
+                padding: 0;
+            }
+            
+            .certificate-actions {
+                display: none;
+            }
+            
+            .certificate {
+                box-shadow: none;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="certificate-actions">
+        <button class="btn btn-print" onclick="window.print()">🖨️ Print Certificate</button>
+        <a href="{{ url_for('academy.my_courses') }}" class="btn btn-back">← Back to My Courses</a>
+    </div>
+    
+    <div class="certificate">
+        <div class="certificate-header">
+            <div class="logo">CHENGETA</div>
+            <div class="subtitle">Academy of Financial Education</div>
+        </div>
+        
+        <div class="certificate-body">
+            <div class="presents">This is to certify that</div>
+            <h1 class="certificate-title">Certificate of Completion</h1>
+            <div class="recipient-name">{{ enrollment.student.full_name or enrollment.student.username }}</div>
+            <p class="completion-text">
+                has successfully completed the course
+            </p>
+            <div class="course-name">"{{ enrollment.course.title }}"</div>
+            <p class="completion-text">
+                demonstrating knowledge and proficiency in the subject matter covered,
+                including {{ enrollment.course.duration_hours }} hours of instruction
+                and {{ enrollment.course.get_total_lessons() }} comprehensive lessons.
+            </p>
+        </div>
+        
+        <div class="certificate-footer">
+            <div class="footer-item">
+                <div class="signature-line"></div>
+                <div class="footer-label">Date Completed</div>
+                <div>{{ enrollment.completed_at.strftime('%B %d, %Y') if enrollment.completed_at else 'N/A' }}</div>
+            </div>
+            
+            <div class="seal">
+                CHENGETA<br>CERTIFIED
+            </div>
+            
+            <div class="footer-item">
+                <div class="signature-line"></div>
+                <div class="footer-label">Instructor</div>
+                <div>Chengeta Academy</div>
+            </div>
+        </div>
+        
+        <div class="certificate-id">
+            Certificate ID: {{ enrollment.certificate_id }}
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+
+{% block title %}Chengeta Academy - Financial Education{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/academy.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="academy-page">
+    <!-- Hero Section -->
+    <section class="academy-hero">
+        <div class="hero-content">
+            <div class="hero-badge">CHENGETA ACADEMY</div>
+            <h1>Master Your Money</h1>
+            <p>Learn budgeting, investing, and wealth-building from expert-led courses</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <span class="stat-number">{{ courses|length }}</span>
+                    <span class="stat-label">Courses</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Hours</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number">5k+</span>
+                    <span class="stat-label">Students</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="{{ url_for('static', filename='img/money-trees.avif') }}" alt="Financial Education">
+        </div>
+    </section>
+
+    <!-- Featured Courses -->
+    {% if featured_courses %}
+    <section class="featured-section">
+        <h2>Featured Courses</h2>
+        <div class="featured-grid">
+            {% for course in featured_courses %}
+            <a href="{{ url_for('academy.course_detail', slug=course.slug) }}" class="featured-card">
+                <div class="featured-image">
+                    {% if course.thumbnail %}
+                    <img src="{{ course.thumbnail }}" alt="{{ course.title }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='img/financecard.avif') }}" alt="{{ course.title }}">
+                    {% endif %}
+                    <div class="featured-badge">Featured</div>
+                </div>
+                <div class="featured-content">
+                    <span class="course-category">{{ course.category|title }}</span>
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.short_description }}</p>
+                    <div class="course-meta">
+                        <span class="duration">{{ course.duration_hours }} hours</span>
+                        <span class="students">{{ course.total_students }} students</span>
+                        <span class="rating">★ {{ course.average_rating or '4.8' }}</span>
+                    </div>
+                    <div class="course-price">
+                        {% if course.price == 0 %}
+                        <span class="free">Free</span>
+                        {% else %}
+                        {% if course.original_price %}
+                        <span class="original">${{ course.original_price }}</span>
+                        {% endif %}
+                        <span class="current">${{ course.price }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    <!-- Filters -->
+    <section class="filters-section">
+        <div class="filters-row">
+            <div class="filter-group">
+                <label>Category</label>
+                <select onchange="filterCourses()" id="categoryFilter">
+                    <option value="all" {{ 'selected' if current_category == 'all' }}>All Categories</option>
+                    <option value="budgeting" {{ 'selected' if current_category == 'budgeting' }}>Budgeting</option>
+                    <option value="investing" {{ 'selected' if current_category == 'investing' }}>Investing</option>
+                    <option value="savings" {{ 'selected' if current_category == 'savings' }}>Savings</option>
+                    <option value="debt" {{ 'selected' if current_category == 'debt' }}>Debt Freedom</option>
+                    <option value="mindset" {{ 'selected' if current_category == 'mindset' }}>Money Mindset</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Level</label>
+                <select onchange="filterCourses()" id="levelFilter">
+                    <option value="all" {{ 'selected' if current_level == 'all' }}>All Levels</option>
+                    <option value="beginner" {{ 'selected' if current_level == 'beginner' }}>Beginner</option>
+                    <option value="intermediate" {{ 'selected' if current_level == 'intermediate' }}>Intermediate</option>
+                    <option value="advanced" {{ 'selected' if current_level == 'advanced' }}>Advanced</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label>Sort By</label>
+                <select onchange="filterCourses()" id="sortFilter">
+                    <option value="popular" {{ 'selected' if current_sort == 'popular' }}>Most Popular</option>
+                    <option value="newest" {{ 'selected' if current_sort == 'newest' }}>Newest</option>
+                    <option value="rating" {{ 'selected' if current_sort == 'rating' }}>Highest Rated</option>
+                    <option value="price_low" {{ 'selected' if current_sort == 'price_low' }}>Price: Low to High</option>
+                    <option value="price_high" {{ 'selected' if current_sort == 'price_high' }}>Price: High to Low</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- All Courses -->
+    <section class="courses-section">
+        <h2>All Courses</h2>
+        
+        {% if courses %}
+        <div class="courses-grid">
+            {% for course in courses %}
+            <a href="{{ url_for('academy.course_detail', slug=course.slug) }}" class="course-card">
+                <div class="card-image">
+                    {% if course.thumbnail %}
+                    <img src="{{ course.thumbnail }}" alt="{{ course.title }}">
+                    {% else %}
+                    <img src="{{ url_for('static', filename='img/financecard.avif') }}" alt="{{ course.title }}">
+                    {% endif %}
+                    <div class="card-level {{ course.level }}">{{ course.level|title }}</div>
+                    {% if course.price == 0 %}
+                    <div class="card-free">Free</div>
+                    {% endif %}
+                </div>
+                <div class="card-content">
+                    <span class="card-category">{{ course.category|title }}</span>
+                    <h3>{{ course.title }}</h3>
+                    <p>{{ course.short_description or course.description[:100] }}...</p>
+                    <div class="card-meta">
+                        <span>{{ course.get_total_lessons() }} lessons</span>
+                        <span>{{ course.duration_hours }} hours</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-rating">
+                            <span class="stars">★ {{ course.average_rating or '4.8' }}</span>
+                            <span class="students">({{ course.total_students }} students)</span>
+                        </div>
+                        <div class="card-price">
+                            {% if course.price == 0 %}
+                            <span class="free">Free</span>
+                            {% else %}
+                            <span class="price">${{ course.price }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            <h3>No courses available yet</h3>
+            <p>Check back soon for new financial education content!</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Transform Your Finances?</h2>
+            <p>Join thousands of students who have improved their financial literacy</p>
+            {% if current_user.is_authenticated %}
+            <a href="{{ url_for('academy.my_courses') }}" class="btn-cta">View My Courses</a>
+            {% else %}
+            <a href="{{ url_for('auth.register') }}" class="btn-cta">Get Started Free</a>
+            {% endif %}
+        </div>
+    </section>
+</div>
+
+<script>
+function filterCourses() {
+    const category = document.getElementById('categoryFilter').value;
+    const level = document.getElementById('levelFilter').value;
+    const sort = document.getElementById('sortFilter').value;
+    
+    window.location.href = `{{ url_for('academy.courses') }}?category=${category}&level=${level}&sort=${sort}`;
+}
+</script>
+{% endblock %}
+

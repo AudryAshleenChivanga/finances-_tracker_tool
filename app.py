@@ -11,6 +11,7 @@ from finance_tracker import FinanceTracker
 from visualizer import FinanceVisualizer
 from ai_service import get_ai_response
 from youtube_service import fetch_finance_videos
+from academy import academy_bp
 import os
 from datetime import datetime
 from dotenv import load_dotenv
@@ -32,6 +33,7 @@ login_manager.login_message = 'Please log in to access this page.'
 
 # Register blueprints
 app.register_blueprint(auth_bp)
+app.register_blueprint(academy_bp)
 
 
 @login_manager.user_loader
@@ -105,6 +107,12 @@ def ai_advisor_page():
 def resources_page():
     """Financial resources library page."""
     return render_template('resources.html', user=current_user)
+
+
+@app.route('/marketplace')
+def marketplace():
+    """Chengeta Marketplace - Financial services and courses (public)."""
+    return render_template('marketplace.html', user=current_user if current_user.is_authenticated else None)
 
 
 # API Endpoints
@@ -454,6 +462,61 @@ def init_database():
     with app.app_context():
         db.create_all()
         print("Database initialized successfully!")
+
+
+# Marketplace API Endpoints
+
+@app.route('/api/marketplace/track', methods=['POST'])
+def track_marketplace_click():
+    """Track affiliate link clicks for analytics."""
+    try:
+        data = request.get_json()
+        partner_id = data.get('partner_id')
+        category = data.get('category')
+        timestamp = data.get('timestamp')
+        
+        # Log the click (in production, save to database)
+        user_id = current_user.id if current_user.is_authenticated else 'anonymous'
+        print(f"Affiliate click: {partner_id} ({category}) at {timestamp} by user {user_id}")
+        
+        # Here you would:
+        # 1. Save to database for analytics
+        # 2. Return the actual affiliate URL
+        # 3. Track conversions
+        
+        return jsonify({
+            'success': True,
+            'message': 'Click tracked successfully',
+            'partner_id': partner_id
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+
+@app.route('/api/marketplace/stats', methods=['GET'])
+@login_required
+def get_marketplace_stats():
+    """Get marketplace click statistics (for admin dashboard)."""
+    # In production, fetch from database
+    stats = {
+        'total_clicks': 1523,
+        'top_partners': [
+            {'name': 'EcoCash Save', 'clicks': 342},
+            {'name': 'Old Mutual Life', 'clicks': 289},
+            {'name': 'Budgeting Mastery Course', 'clicks': 215}
+        ],
+        'category_breakdown': {
+            'banking': 456,
+            'insurance': 389,
+            'investment': 234,
+            'loans': 189,
+            'courses': 255
+        }
+    }
+    return jsonify({'success': True, 'stats': stats})
 
 
 if __name__ == '__main__':
