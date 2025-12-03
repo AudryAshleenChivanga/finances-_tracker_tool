@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Quiz - {{ lesson.title }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/academy.css') }}">
+<style>
+    .quiz-admin {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .quiz-settings {
+        background: #fff;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .quiz-settings h3 {
+        margin-bottom: 1.25rem;
+        color: #1a1a2e;
+    }
+    
+    .settings-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+    }
+    
+    .add-question-section {
+        background: #fff;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .add-question-section h3 {
+        margin-bottom: 1.25rem;
+        color: #1a1a2e;
+    }
+    
+    .question-type-tabs {
+        display: flex;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .type-tab {
+        padding: 0.6rem 1.25rem;
+        border: 2px solid #ddd;
+        background: #fff;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: all 0.2s;
+    }
+    
+    .type-tab:hover {
+        border-color: #00d4aa;
+    }
+    
+    .type-tab.active {
+        border-color: #00d4aa;
+        background: #f0fdf4;
+        color: #00d4aa;
+    }
+    
+    .options-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .option-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+    
+    .option-row input[type="text"] {
+        flex: 1;
+    }
+    
+    .option-row input[type="radio"] {
+        width: 20px;
+        height: 20px;
+        accent-color: #00d4aa;
+    }
+    
+    .questions-list {
+        background: #fff;
+        border-radius: 16px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .questions-list h3 {
+        margin-bottom: 1.25rem;
+        color: #1a1a2e;
+    }
+    
+    .question-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 10px;
+        margin-bottom: 0.75rem;
+    }
+    
+    .question-number {
+        width: 32px;
+        height: 32px;
+        background: #00d4aa;
+        color: #fff;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        flex-shrink: 0;
+    }
+    
+    .question-content {
+        flex: 1;
+    }
+    
+    .question-content p {
+        margin-bottom: 0.5rem;
+        color: #1a1a2e;
+    }
+    
+    .question-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.8rem;
+        color: #666;
+    }
+    
+    .question-actions form {
+        display: inline;
+    }
+    
+    .btn-delete-q {
+        background: #fee2e2;
+        color: #991b1b;
+        border: none;
+        padding: 0.4rem 0.75rem;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.8rem;
+    }
+    
+    .btn-delete-q:hover {
+        background: #fecaca;
+    }
+    
+    .empty-questions {
+        text-align: center;
+        padding: 2rem;
+        color: #888;
+    }
+    
+    .true-false-options {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .tf-option {
+        flex: 1;
+        padding: 1rem;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+    
+    .tf-option:hover {
+        border-color: #00d4aa;
+    }
+    
+    .tf-option input {
+        display: none;
+    }
+    
+    .tf-option input:checked + span {
+        color: #00d4aa;
+        font-weight: 600;
+    }
+    
+    .tf-option:has(input:checked) {
+        border-color: #00d4aa;
+        background: #f0fdf4;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="quiz-admin">
+    <div class="admin-header">
+        <a href="{{ url_for('academy.manage_lessons', course_id=lesson.course_id) }}" class="back-link">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Lessons
+        </a>
+        <h1>Quiz: {{ lesson.title }}</h1>
+    </div>
+
+    <!-- Quiz Settings -->
+    <form method="POST" class="quiz-settings">
+        <h3>Quiz Settings</h3>
+        <div class="settings-grid">
+            <div class="form-group">
+                <label for="title">Quiz Title</label>
+                <input type="text" id="title" name="title" value="{{ quiz.title if quiz else 'Quiz: ' + lesson.title }}">
+            </div>
+            <div class="form-group">
+                <label for="passing_score">Passing Score (%)</label>
+                <input type="number" id="passing_score" name="passing_score" min="0" max="100" value="{{ quiz.passing_score if quiz else 70 }}">
+            </div>
+            <div class="form-group">
+                <label for="max_attempts">Max Attempts (0 = unlimited)</label>
+                <input type="number" id="max_attempts" name="max_attempts" min="0" value="{{ quiz.max_attempts if quiz else 3 }}">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="description">Description (optional)</label>
+            <textarea id="description" name="description" rows="2">{{ quiz.description if quiz else '' }}</textarea>
+        </div>
+        <div class="form-group" style="display: flex; gap: 2rem;">
+            <label class="checkbox-label">
+                <input type="checkbox" name="shuffle_questions" {{ 'checked' if not quiz or quiz.shuffle_questions }}>
+                Shuffle questions
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" name="show_correct_answers" {{ 'checked' if not quiz or quiz.show_correct_answers }}>
+                Show correct answers after submission
+            </label>
+        </div>
+        <button type="submit" class="btn-save" style="margin-top: 1rem;">Save Settings</button>
+    </form>
+
+    {% if quiz %}
+    <!-- Add Question -->
+    <div class="add-question-section">
+        <h3>Add Question</h3>
+        
+        <div class="question-type-tabs">
+            <button type="button" class="type-tab active" onclick="showQuestionType('multiple_choice')">Multiple Choice</button>
+            <button type="button" class="type-tab" onclick="showQuestionType('true_false')">True/False</button>
+            <button type="button" class="type-tab" onclick="showQuestionType('short_answer')">Short Answer</button>
+        </div>
+
+        <form method="POST" action="{{ url_for('academy.add_question', quiz_id=quiz.id) }}" id="questionForm">
+            <input type="hidden" name="question_type" id="questionType" value="multiple_choice">
+            
+            <div class="form-group">
+                <label for="question_text">Question</label>
+                <textarea id="question_text" name="question_text" rows="3" required placeholder="Enter your question here..."></textarea>
+            </div>
+
+            <!-- Multiple Choice Options -->
+            <div id="mcOptions" class="options-container">
+                <label>Options (select the correct answer)</label>
+                {% for i in range(4) %}
+                <div class="option-row">
+                    <input type="radio" name="correct_answer" value="{{ i }}" {{ 'checked' if i == 0 }}>
+                    <input type="text" name="option_{{ i }}" placeholder="Option {{ ['A', 'B', 'C', 'D'][i] }}" {{ 'required' if i < 2 }}>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- True/False Options -->
+            <div id="tfOptions" class="true-false-options" style="display: none;">
+                <label class="tf-option">
+                    <input type="radio" name="correct_answer" value="0">
+                    <span>True</span>
+                </label>
+                <label class="tf-option">
+                    <input type="radio" name="correct_answer" value="1">
+                    <span>False</span>
+                </label>
+            </div>
+
+            <!-- Short Answer -->
+            <div id="saOptions" style="display: none;">
+                <div class="form-group">
+                    <label for="correct_answer_text">Correct Answer</label>
+                    <input type="text" id="correct_answer_text" name="correct_answer" placeholder="Enter the correct answer">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="explanation">Explanation (shown after answering)</label>
+                <textarea id="explanation" name="explanation" rows="2" placeholder="Explain why this is the correct answer..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-save">Add Question</button>
+        </form>
+    </div>
+
+    <!-- Questions List -->
+    <div class="questions-list">
+        <h3>Questions ({{ questions|length }})</h3>
+        
+        {% if questions %}
+        {% for question in questions %}
+        <div class="question-item">
+            <div class="question-number">{{ loop.index }}</div>
+            <div class="question-content">
+                <p><strong>{{ question.question_text }}</strong></p>
+                <div class="question-meta">
+                    <span>Type: {{ question.question_type|replace('_', ' ')|title }}</span>
+                    <span>Points: {{ question.points }}</span>
+                </div>
+            </div>
+            <div class="question-actions">
+                <form action="{{ url_for('academy.delete_question', question_id=question.id) }}" method="POST" 
+                      onsubmit="return confirm('Delete this question?');">
+                    <button type="submit" class="btn-delete-q">Delete</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="empty-questions">
+            <p>No questions yet. Add your first question above!</p>
+        </div>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="add-question-section">
+        <p style="text-align: center; color: #666;">Save quiz settings first to add questions.</p>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+function showQuestionType(type) {
+    // Update tabs
+    document.querySelectorAll('.type-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Update hidden field
+    document.getElementById('questionType').value = type;
+    
+    // Show/hide option sections
+    document.getElementById('mcOptions').style.display = type === 'multiple_choice' ? 'flex' : 'none';
+    document.getElementById('tfOptions').style.display = type === 'true_false' ? 'flex' : 'none';
+    document.getElementById('saOptions').style.display = type === 'short_answer' ? 'block' : 'none';
+    
+    // Update required fields
+    const mcInputs = document.querySelectorAll('#mcOptions input[type="text"]');
+    mcInputs.forEach((input, i) => {
+        input.required = type === 'multiple_choice' && i < 2;
+    });
+    
+    document.getElementById('correct_answer_text').required = type === 'short_answer';
+}
+</script>
+{% endblock %}
+
