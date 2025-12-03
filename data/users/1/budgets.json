@@ -1,0 +1,7 @@
+{
+  "Rent": {
+    "amount": 250000.0,
+    "period": "monthly",
+    "created_date": "2025-12-03"
+  }
+}

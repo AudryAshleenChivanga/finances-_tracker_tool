@@ -1,327 +1,256 @@
 // Financial Resources Library JavaScript
+// Automatically fetches finance videos from YouTube API
 
-// Resources database
-const resources = {
-    audiobooks: [
-        {
-            id: 1,
-            title: "Rich Dad Poor Dad",
-            author: "Robert Kiyosaki",
-            category: "mindset",
-            duration: "6h 9m",
-            rating: 4.8,
-            description: "Learn what the rich teach their kids about money that the poor and middle class do not.",
-            topics: ["Financial Education", "Assets vs Liabilities", "Money Mindset"],
-            level: "Beginner",
-            featured: true
-        },
-        {
-            id: 2,
-            title: "The Total Money Makeover",
-            author: "Dave Ramsey",
-            category: "debt",
-            duration: "3h 41m",
-            rating: 4.7,
-            description: "A proven plan for financial fitness. Get out of debt and build wealth.",
-            topics: ["Debt Freedom", "Emergency Fund", "7 Baby Steps"],
-            level: "Beginner",
-            featured: true
-        },
-        {
-            id: 3,
-            title: "Think and Grow Rich",
-            author: "Napoleon Hill",
-            category: "mindset",
-            duration: "10h 12m",
-            rating: 4.9,
-            description: "The classic success book that has influenced millions of successful people.",
-            topics: ["Success Principles", "Wealth Building", "Mental Attitude"],
-            level: "All Levels",
-            featured: false
-        },
-        {
-            id: 4,
-            title: "The Intelligent Investor",
-            author: "Benjamin Graham",
-            category: "investing",
-            duration: "15h 5m",
-            rating: 4.8,
-            description: "The definitive book on value investing. A must-read for serious investors.",
-            topics: ["Value Investing", "Stock Market", "Long-term Strategy"],
-            level: "Intermediate",
-            featured: true
-        },
-        {
-            id: 5,
-            title: "Your Money or Your Life",
-            author: "Vicki Robin",
-            category: "savings",
-            duration: "11h 32m",
-            rating: 4.6,
-            description: "Transform your relationship with money and achieve financial independence.",
-            topics: ["Financial Independence", "Life Energy", "FIRE Movement"],
-            level: "All Levels",
-            featured: false
-        },
-        {
-            id: 6,
-            title: "I Will Teach You to Be Rich",
-            author: "Ramit Sethi",
-            category: "budgeting",
-            duration: "12h 57m",
-            rating: 4.7,
-            description: "No-guilt, practical approach to managing your money in your 20s and 30s.",
-            topics: ["Automation", "Conscious Spending", "Investing"],
-            level: "Beginner",
-            featured: false
-        }
-    ],
+let resources = { videos: [] };
+let isLoading = false;
+
+// Load resources on page load
+document.addEventListener('DOMContentLoaded', () => {
+    loadVideosFromAPI();
+});
+
+// Fetch videos from backend API
+async function loadVideosFromAPI(forceRefresh = false) {
+    if (isLoading) return;
+    isLoading = true;
     
-    videos: [
-        {
-            id: 101,
-            title: "Personal Finance 101: Complete Beginner's Guide",
-            channel: "Khan Academy",
-            category: "budgeting",
-            duration: "45:23",
-            rating: 4.9,
-            description: "Master the fundamentals of personal finance from budgeting to investing.",
-            topics: ["Budgeting Basics", "Saving", "Debt", "Credit"],
-            level: "Beginner",
-            featured: true,
-            thumbnail: "https://via.placeholder.com/300x200/10b981/ffffff?text=Personal+Finance+101"
-        },
-        {
-            id: 102,
-            title: "How to Invest for Beginners",
-            channel: "Graham Stephan",
-            category: "investing",
-            duration: "32:15",
-            rating: 4.8,
-            description: "Step-by-step guide to start investing even with little money.",
-            topics: ["Index Funds", "Stock Market", "Retirement Accounts"],
-            level: "Beginner",
-            featured: true,
-            thumbnail: "https://via.placeholder.com/300x200/0891b2/ffffff?text=Investing+for+Beginners"
-        },
-        {
-            id: 103,
-            title: "Debt Freedom Journey: Pay Off $100K",
-            channel: "The Financial Diet",
-            category: "debt",
-            duration: "28:47",
-            rating: 4.7,
-            description: "Real story of paying off massive debt and practical strategies you can use.",
-            topics: ["Debt Snowball", "Budget Cutting", "Income Increase"],
-            level: "All Levels",
-            featured: false,
-            thumbnail: "https://via.placeholder.com/300x200/22c55e/ffffff?text=Debt+Freedom"
-        },
-        {
-            id: 104,
-            title: "Building Wealth in Your 20s and 30s",
-            channel: "Minority Mindset",
-            category: "savings",
-            duration: "41:19",
-            rating: 4.8,
-            description: "Essential wealth-building strategies for young adults.",
-            topics: ["Compound Interest", "Asset Building", "Side Hustles"],
-            level: "Beginner",
-            featured: true,
-            thumbnail: "https://via.placeholder.com/300x200/3b82f6/ffffff?text=Building+Wealth"
-        },
-        {
-            id: 105,
-            title: "The Psychology of Money",
-            channel: "Morgan Housel",
-            category: "mindset",
-            duration: "52:34",
-            rating: 4.9,
-            description: "Understanding how emotions and psychology impact your financial decisions.",
-            topics: ["Money Mindset", "Behavioral Finance", "Decision Making"],
-            level: "All Levels",
-            featured: false,
-            thumbnail: "https://via.placeholder.com/300x200/8b5cf6/ffffff?text=Psychology+of+Money"
-        },
-        {
-            id: 106,
-            title: "Passive Income: 7 Proven Strategies",
-            channel: "Andrei Jikh",
-            category: "entrepreneurship",
-            duration: "36:42",
-            rating: 4.7,
-            description: "Learn how to create passive income streams and achieve financial freedom.",
-            topics: ["Passive Income", "Real Estate", "Dividends", "Online Business"],
-            level: "Intermediate",
-            featured: false,
-            thumbnail: "https://via.placeholder.com/300x200/ec4899/ffffff?text=Passive+Income"
+    // Show loading state
+    showLoadingState();
+    
+    try {
+        const url = forceRefresh 
+            ? '/api/resources/videos?refresh=true' 
+            : '/api/resources/videos';
+            
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data.success && data.videos.length > 0) {
+            resources.videos = data.videos;
+            console.log(`Loaded ${data.count} videos`);
+        } else {
+            // Use fallback videos if API fails
+            console.log('Using fallback videos');
+            resources.videos = getDefaultVideos();
         }
-    ]
-};
+        
+        // Render the videos
+        loadResources();
+        
+    } catch (error) {
+        console.error('Error fetching videos:', error);
+        // Use fallback videos
+        resources.videos = getDefaultVideos();
+        loadResources();
+    } finally {
+        isLoading = false;
+        hideLoadingState();
+    }
+}
 
-// Load resources
+// Show loading spinner
+function showLoadingState() {
+    const featuredGrid = document.getElementById('featured-grid');
+    const videosGrid = document.getElementById('videos-grid');
+    
+    const loadingHTML = `
+        <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading finance videos...</p>
+        </div>
+    `;
+    
+    if (featuredGrid) featuredGrid.innerHTML = loadingHTML;
+    if (videosGrid) videosGrid.innerHTML = loadingHTML;
+}
+
+// Hide loading spinner
+function hideLoadingState() {
+    // Loading state is replaced when videos are rendered
+}
+
+// Load resources into the page
 function loadResources() {
     loadFeatured();
-    loadAudiobooks();
-    loadVideos();
+    loadAllVideos();
 }
 
 // Load featured resources
 function loadFeatured() {
-    const featured = [
-        ...resources.audiobooks.filter(r => r.featured),
-        ...resources.videos.filter(r => r.featured)
-    ];
-    
+    const featured = resources.videos.filter(r => r.featured);
     const grid = document.getElementById('featured-grid');
-    grid.innerHTML = featured.map(resource => createResourceCard(resource)).join('');
+    if (grid) {
+        if (featured.length > 0) {
+            grid.innerHTML = featured.map(video => createVideoCard(video)).join('');
+        } else {
+            grid.innerHTML = '<p class="no-results">No featured videos available</p>';
+        }
+    }
 }
 
-// Load audiobooks
-function loadAudiobooks() {
-    const grid = document.getElementById('audiobooks-grid');
-    grid.innerHTML = resources.audiobooks.map(book => createAudiobookCard(book)).join('');
-}
-
-// Load videos
-function loadVideos() {
+// Load all videos
+function loadAllVideos() {
     const grid = document.getElementById('videos-grid');
-    grid.innerHTML = resources.videos.map(video => createVideoCard(video)).join('');
+    if (grid) {
+        if (resources.videos.length > 0) {
+            grid.innerHTML = resources.videos.map(video => createVideoCard(video)).join('');
+        } else {
+            grid.innerHTML = '<p class="no-results">No videos available</p>';
+        }
+    }
 }
 
-// Create resource card
-function createResourceCard(resource) {
-    const isVideo = resource.id > 100;
-    const icon = isVideo ? '🎥' : '📖';
-    const type = isVideo ? 'Video' : 'Audiobook';
-    
-    return `
-        <div class="resource-card" onclick="openResource(${resource.id}, '${isVideo ? 'video' : 'audiobook'}')">
-            ${resource.thumbnail ? `<img src="${resource.thumbnail}" alt="${resource.title}" class="resource-thumbnail">` : ''}
-            <div class="resource-info">
-                <div class="resource-type">${icon} ${type}</div>
-                <h3 class="resource-title">${resource.title}</h3>
-                <p class="resource-author">${resource.author || resource.channel}</p>
-                <div class="resource-meta">
-                    <span class="meta-item">⏱️ ${resource.duration}</span>
-                    <span class="meta-item">⭐ ${resource.rating}</span>
-                    <span class="meta-badge">${resource.level}</span>
-                </div>
-            </div>
-        </div>
-    `;
-}
-
-// Create audiobook card
-function createAudiobookCard(book) {
-    return `
-        <div class="resource-card" onclick="openResource(${book.id}, 'audiobook')">
-            <div class="audiobook-cover">
-                <div class="audiobook-icon">📖</div>
-                <div class="audiobook-badge">${book.level}</div>
-            </div>
-            <div class="resource-info">
-                <h3 class="resource-title">${book.title}</h3>
-                <p class="resource-author">by ${book.author}</p>
-                <p class="resource-description">${book.description}</p>
-                <div class="resource-meta">
-                    <span class="meta-item">⏱️ ${book.duration}</span>
-                    <span class="meta-item">⭐ ${book.rating}</span>
-                </div>
-                <div class="resource-topics">
-                    ${book.topics.map(topic => `<span class="topic-tag">${topic}</span>`).join('')}
-                </div>
-            </div>
-        </div>
-    `;
+// Get YouTube thumbnail URL
+function getYouTubeThumbnail(videoId) {
+    return `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`;
 }
 
 // Create video card
 function createVideoCard(video) {
+    const thumbnail = video.youtubeId ? getYouTubeThumbnail(video.youtubeId) : (video.thumbnail || '');
+    const duration = video.duration || '';
+    const rating = video.rating || 4.5;
+    const level = video.level || 'All Levels';
+    
     return `
-        <div class="resource-card video-card" onclick="openResource(${video.id}, 'video')">
+        <div class="resource-card video-card" onclick="openResource(${video.id})">
             <div class="video-thumbnail">
-                <img src="${video.thumbnail}" alt="${video.title}">
+                <img src="${thumbnail}" alt="${video.title}" onerror="this.style.display='none'">
                 <div class="play-overlay">
                     <div class="play-button">▶</div>
                 </div>
-                <div class="video-duration">${video.duration}</div>
+                ${duration ? `<div class="video-duration">${duration}</div>` : ''}
             </div>
             <div class="resource-info">
                 <h3 class="resource-title">${video.title}</h3>
                 <p class="resource-author">${video.channel}</p>
                 <p class="resource-description">${video.description}</p>
                 <div class="resource-meta">
-                    <span class="meta-item">⭐ ${video.rating}</span>
-                    <span class="meta-badge">${video.level}</span>
+                    <span class="meta-item">⭐ ${rating}</span>
+                    <span class="meta-badge">${level}</span>
                 </div>
             </div>
         </div>
     `;
 }
 
-// Filter resources
+// Filter resources by category
 function filterResources(type) {
-    const sections = document.querySelectorAll('.resource-section');
     const tabs = document.querySelectorAll('.filter-tab');
+    const featuredSection = document.querySelector('.featured-section');
+    const videosGrid = document.getElementById('videos-grid');
     
     // Update active tab
     tabs.forEach(tab => tab.classList.remove('active'));
     event.target.classList.add('active');
     
     if (type === 'all') {
-        sections.forEach(section => section.style.display = 'block');
+        if (featuredSection) featuredSection.style.display = 'block';
+        videosGrid.innerHTML = resources.videos.map(video => createVideoCard(video)).join('');
     } else {
-        sections.forEach(section => {
-            if (section.dataset.category === type) {
-                section.style.display = 'block';
-            } else {
-                section.style.display = 'none';
-            }
-        });
+        if (featuredSection) featuredSection.style.display = 'none';
+        const filtered = resources.videos.filter(v => v.category === type);
+        videosGrid.innerHTML = filtered.length > 0 
+            ? filtered.map(video => createVideoCard(video)).join('')
+            : '<p class="no-results">No videos found for this category</p>';
     }
 }
 
 // Filter by topic
 function filterByTopic(topic) {
-    // This would filter resources by topic
-    showToast(`Showing ${topic} resources`, 'info');
-    // Implementation for filtering
+    const filtered = resources.videos.filter(v => 
+        v.category === topic || 
+        (v.topics && v.topics.some(t => t.toLowerCase().includes(topic.toLowerCase())))
+    );
+    
+    // Show toast with filter info
+    if (typeof showToast === 'function') {
+        showToast(`Found ${filtered.length} resources on ${topic}`, 'info');
+    }
+    
+    const videosGrid = document.getElementById('videos-grid');
+    if (videosGrid) {
+        videosGrid.innerHTML = filtered.length > 0
+            ? filtered.map(video => createVideoCard(video)).join('')
+            : '<p class="no-results">No videos found for this topic</p>';
+    }
+    
+    // Hide featured section when filtering
+    const featuredSection = document.querySelector('.featured-section');
+    if (featuredSection) featuredSection.style.display = 'none';
+    
+    // Update tabs
+    const tabs = document.querySelectorAll('.filter-tab');
+    tabs.forEach(tab => tab.classList.remove('active'));
 }
 
-// Open resource detail
-function openResource(id, type) {
-    const resource = type === 'video' 
-        ? resources.videos.find(v => v.id === id)
-        : resources.audiobooks.find(b => b.id === id);
+// Open resource detail with embedded player
+function openResource(id) {
+    const resource = resources.videos.find(v => v.id === id);
     
     if (!resource) return;
     
     const modal = document.getElementById('resource-modal');
     const detail = document.getElementById('resource-detail');
+    const titleEl = document.getElementById('resource-title');
+    
+    if (titleEl) {
+        titleEl.textContent = resource.title;
+    }
+    
+    // Create embedded YouTube player
+    const playerHTML = resource.youtubeId ? `
+        <div class="video-player-container">
+            <iframe 
+                id="youtube-player"
+                src="https://www.youtube.com/embed/${resource.youtubeId}?rel=0&modestbranding=1&autoplay=0"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+        </div>
+    ` : '';
+    
+    const topics = resource.topics || ['Personal Finance'];
     
     detail.innerHTML = `
         <div class="resource-detail-content">
-            ${resource.thumbnail ? `<img src="${resource.thumbnail}" class="detail-thumbnail">` : ''}
-            <h3>${resource.title}</h3>
-            <p class="detail-author">${resource.author || resource.channel}</p>
-            <div class="detail-meta">
-                <span>⏱️ ${resource.duration}</span>
-                <span>⭐ ${resource.rating}/5.0</span>
-                <span>${resource.level}</span>
-            </div>
-            <p class="detail-description">${resource.description}</p>
-            <div class="detail-topics">
-                <strong>Topics Covered:</strong><br>
-                ${resource.topics.map(t => `<span class="topic-tag">${t}</span>`).join('')}
-            </div>
-            <div class="detail-actions">
-                <button class="btn btn-primary" onclick="startLearning('${resource.title}')">
-                    Start Learning
-                </button>
-                <button class="btn btn-secondary" onclick="saveForLater(${id})">
-                    Save for Later
-                </button>
+            ${playerHTML}
+            <div class="resource-detail-info">
+                <div class="detail-header">
+                    <span class="detail-type video">🎥 Video</span>
+                    <span class="detail-level">${resource.level || 'All Levels'}</span>
+                </div>
+                <p class="detail-author">${resource.channel}</p>
+                <div class="detail-meta">
+                    <span>⏱️ ${resource.duration || 'N/A'}</span>
+                    <span>⭐ ${resource.rating || 4.5}/5.0</span>
+                </div>
+                <p class="detail-description">${resource.description}</p>
+                <div class="detail-topics">
+                    <strong>Topics Covered:</strong>
+                    <div class="topics-list">
+                        ${topics.map(t => `<span class="topic-tag">${t}</span>`).join('')}
+                    </div>
+                </div>
+                <div class="detail-actions">
+                    ${resource.youtubeId ? `
+                        <a href="https://www.youtube.com/watch?v=${resource.youtubeId}" 
+                           target="_blank" 
+                           class="btn btn-primary">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                            </svg>
+                            Watch on YouTube
+                        </a>
+                    ` : ''}
+                    <button class="btn btn-secondary" onclick="saveForLater(${id})">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        Save for Later
+                    </button>
+                </div>
             </div>
         </div>
     `;
@@ -330,25 +259,233 @@ function openResource(id, type) {
     modal.style.display = 'flex';
 }
 
-// Close resource modal
+// Close resource modal and stop any playing content
 function closeResourceModal() {
     const modal = document.getElementById('resource-modal');
+    
+    // Stop YouTube video by removing iframe src
+    const iframe = document.getElementById('youtube-player');
+    if (iframe) {
+        iframe.src = '';
+    }
+    
     modal.classList.remove('active');
     modal.style.display = 'none';
 }
 
-// Start learning
-function startLearning(title) {
-    showToast(`Opening ${title}...`, 'info');
-    // This would open the actual resource
-}
-
 // Save for later
 function saveForLater(id) {
-    showToast('Saved to your library!', 'success');
-    // This would save to user's saved list
+    let saved = JSON.parse(localStorage.getItem('savedResources') || '[]');
+    
+    if (!saved.includes(id)) {
+        saved.push(id);
+        localStorage.setItem('savedResources', JSON.stringify(saved));
+        if (typeof showToast === 'function') {
+            showToast('Saved to your library!', 'success');
+        }
+    } else {
+        if (typeof showToast === 'function') {
+            showToast('Already in your library', 'info');
+        }
+    }
 }
 
-// Load resources on page load
-document.addEventListener('DOMContentLoaded', loadResources);
+// Refresh videos from YouTube
+function refreshVideos() {
+    if (typeof showToast === 'function') {
+        showToast('Refreshing videos from YouTube...', 'info');
+    }
+    loadVideosFromAPI(true);
+}
 
+// Reset filters
+function resetFilters() {
+    loadResources();
+    const featuredSection = document.querySelector('.featured-section');
+    if (featuredSection) featuredSection.style.display = 'block';
+    
+    const tabs = document.querySelectorAll('.filter-tab');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+        if (tab.textContent.includes('All')) {
+            tab.classList.add('active');
+        }
+    });
+}
+
+// Close modal on escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeResourceModal();
+    }
+});
+
+// Close modal on outside click
+document.addEventListener('click', function(e) {
+    const modal = document.getElementById('resource-modal');
+    if (e.target === modal) {
+        closeResourceModal();
+    }
+});
+
+// Default/fallback videos when API is unavailable
+function getDefaultVideos() {
+    return [
+        {
+            id: 1,
+            title: "How To Manage Your Money (50/30/20 Rule)",
+            channel: "Nischa",
+            category: "budgeting",
+            duration: "10:14",
+            rating: 4.9,
+            description: "Master the 50/30/20 budgeting rule to take control of your finances.",
+            topics: ["Budgeting", "50/30/20 Rule", "Money Management"],
+            level: "Beginner",
+            featured: true,
+            youtubeId: "HQzoZfc3GwQ"
+        },
+        {
+            id: 2,
+            title: "Stock Market For Beginners",
+            channel: "ClearValue Tax",
+            category: "investing",
+            duration: "36:12",
+            rating: 4.8,
+            description: "Complete beginner's guide to investing in the stock market.",
+            topics: ["Stocks", "Investing Basics", "Stock Market"],
+            level: "Beginner",
+            featured: true,
+            youtubeId: "p7HKvqRI_Bo"
+        },
+        {
+            id: 3,
+            title: "Dave Ramsey's 7 Baby Steps",
+            channel: "The Ramsey Show",
+            category: "debt",
+            duration: "14:23",
+            rating: 4.8,
+            description: "Learn Dave Ramsey's proven 7-step plan to get out of debt.",
+            topics: ["Debt Freedom", "Baby Steps", "Financial Peace"],
+            level: "Beginner",
+            featured: true,
+            youtubeId: "2bLkBLxKrVg"
+        },
+        {
+            id: 4,
+            title: "How To Create A Budget",
+            channel: "Rachel Cruze",
+            category: "budgeting",
+            duration: "8:45",
+            rating: 4.7,
+            description: "Step-by-step guide to creating a budget you'll stick to.",
+            topics: ["Budgeting", "Zero-Based Budget", "Money Plan"],
+            level: "Beginner",
+            featured: false,
+            youtubeId: "sVKQn2I4HDM"
+        },
+        {
+            id: 5,
+            title: "Index Funds Explained",
+            channel: "Two Cents",
+            category: "investing",
+            duration: "8:56",
+            rating: 4.8,
+            description: "Everything you need to know about index fund investing.",
+            topics: ["Index Funds", "Passive Investing", "S&P 500"],
+            level: "Beginner",
+            featured: true,
+            youtubeId: "fwe-PjrX23o"
+        },
+        {
+            id: 6,
+            title: "Build An Emergency Fund",
+            channel: "The Financial Diet",
+            category: "savings",
+            duration: "11:28",
+            rating: 4.7,
+            description: "Practical tips to build your emergency fund quickly.",
+            topics: ["Emergency Fund", "Savings", "Financial Security"],
+            level: "Beginner",
+            featured: true,
+            youtubeId: "vZyeeVnja78"
+        },
+        {
+            id: 7,
+            title: "Roth IRA Explained",
+            channel: "Humphrey Yang",
+            category: "retirement",
+            duration: "9:52",
+            rating: 4.9,
+            description: "Complete guide to Roth IRA retirement accounts.",
+            topics: ["Roth IRA", "Retirement", "Tax-Free Growth"],
+            level: "Beginner",
+            featured: false,
+            youtubeId: "vn3-EWs1Yfs"
+        },
+        {
+            id: 8,
+            title: "How To Pay Off Debt Fast",
+            channel: "Graham Stephan",
+            category: "debt",
+            duration: "15:47",
+            rating: 4.8,
+            description: "Strategies to pay off debt and save on interest.",
+            topics: ["Debt Payoff", "Debt Snowball", "Financial Freedom"],
+            level: "All Levels",
+            featured: false,
+            youtubeId: "mJCfLPftTKA"
+        },
+        {
+            id: 9,
+            title: "Credit Score Explained",
+            channel: "Two Cents",
+            category: "debt",
+            duration: "7:23",
+            rating: 4.8,
+            description: "Understand how credit scores work and improve yours.",
+            topics: ["Credit Score", "FICO", "Credit Building"],
+            level: "Beginner",
+            featured: false,
+            youtubeId: "DP6XSqV2VZs"
+        },
+        {
+            id: 10,
+            title: "Compound Interest Explained",
+            channel: "The Plain Bagel",
+            category: "investing",
+            duration: "8:56",
+            rating: 4.9,
+            description: "How compound interest works and why it's powerful.",
+            topics: ["Compound Interest", "Investing", "Wealth Building"],
+            level: "Beginner",
+            featured: false,
+            youtubeId: "wf91rEGw88Q"
+        },
+        {
+            id: 11,
+            title: "Start Investing With Little Money",
+            channel: "Andrei Jikh",
+            category: "investing",
+            duration: "18:34",
+            rating: 4.8,
+            description: "Start investing even if you only have $100.",
+            topics: ["Investing", "Beginners", "Small Amounts"],
+            level: "Beginner",
+            featured: true,
+            youtubeId: "gFQNPmLKj1k"
+        },
+        {
+            id: 12,
+            title: "401k Explained",
+            channel: "Two Cents",
+            category: "retirement",
+            duration: "3:42",
+            rating: 4.7,
+            description: "Quick explanation of 401k retirement accounts.",
+            topics: ["401k", "Retirement", "Employer Match"],
+            level: "Beginner",
+            featured: false,
+            youtubeId: "5MIR_gKLN0s"
+        }
+    ];
+}

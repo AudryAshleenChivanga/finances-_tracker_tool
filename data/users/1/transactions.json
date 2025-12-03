@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "date": "2025-12-03 12:09:48",
+    "amount": 500000.0,
+    "category": "Salary",
+    "description": "Work",
+    "type": "income"
+  },
+  {
+    "id": 2,
+    "date": "2025-12-03 12:10:17",
+    "amount": 250000.0,
+    "category": "Rent",
+    "description": "Dec 2025",
+    "type": "expense"
+  },
+  {
+    "id": 3,
+    "date": "2025-12-03 12:12:37",
+    "amount": 60000.0,
+    "category": "Lunch",
+    "description": "Dec 2025",
+    "type": "expense"
+  }
+]

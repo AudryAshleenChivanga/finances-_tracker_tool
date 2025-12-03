@@ -6,7 +6,7 @@
     <title>Chengeta - Manage Your Money Better</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="landing-body">
     <!-- Navigation -->
@@ -45,13 +45,16 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
+        <div class="hero-background">
+            <div class="hero-gradient"></div>
+            <img src="{{ url_for('static', filename='img/younghappyblackwoman.webp') }}" alt="Financial Freedom" class="hero-bg-image">
+        </div>
         <div class="container hero-container">
             <div class="hero-content">
                 <div class="hero-badge">
-                    <span class="badge-icon">⭐</span>
                     <span>Track Your Wealth & Achieve Financial Freedom</span>
                 </div>
-                <h1 class="hero-title">Manage Your Money with Zero Fees</h1>
+                <h1 class="hero-title">Take Control of Your <span class="gradient-text">Financial Future</span></h1>
                 <p class="hero-subtitle">
                     Track every dollar, set smart budgets, and watch your wealth grow. Get real-time insights on your spending and achieve your financial goals faster.
                 </p>
@@ -60,48 +63,66 @@
                         <span>Start Tracking Free</span>
                         <span class="btn-arrow">→</span>
                     </a>
+                    <a href="#how-it-works" class="btn btn-outline btn-lg">
+                        <span>See How It Works</span>
+                    </a>
                 </div>
-                <p class="hero-note">✓ No credit card required  •  ✓ Free forever  •  ✓ Setup in 2 minutes</p>
+                <p class="hero-note">No credit card required  •  Free forever  •  Setup in 2 minutes</p>
+                
+                <!-- Trust Avatars -->
+                <div class="trust-avatars">
+                    <div class="avatar-stack">
+                        <img src="{{ url_for('static', filename='img/happycouple.webp') }}" alt="User" class="trust-avatar">
+                        <img src="{{ url_for('static', filename='img/younghappyblackwoman.webp') }}" alt="User" class="trust-avatar">
+                        <img src="{{ url_for('static', filename='img/financialfreedom.webp') }}" alt="User" class="trust-avatar">
+                        <span class="avatar-more">+10K</span>
+                    </div>
+                    <div class="trust-text">
+                        <span class="trust-stars">★★★★★</span>
+                        <span>Loved by 10,000+ users</span>
+                    </div>
+                </div>
             </div>
             
             <div class="hero-visual">
-                <div class="hero-image-container">
-                    <div class="floating-card performance-card">
-                        <div class="card-header">
-                            <h3>Your Performance</h3>
-                            <span class="trend-up">↑ 23%</span>
+                <div class="hero-image-wrapper">
+                    <img src="{{ url_for('static', filename='img/digital-piggybank.avif') }}" alt="Digital Savings" class="hero-main-image">
+                    <div class="floating-card savings-card">
+                        <div class="card-icon-wrapper">
+                            <span class="card-icon-text">$</span>
                         </div>
-                        <div class="stat-number">$12,847.50</div>
-                        <p class="stat-label">Total Savings This Year</p>
-                        <div class="mini-chart">
-                            <div class="chart-bar" style="height: 40%"></div>
-                            <div class="chart-bar" style="height: 65%"></div>
-                            <div class="chart-bar" style="height: 85%"></div>
-                            <div class="chart-bar" style="height: 70%"></div>
-                            <div class="chart-bar" style="height: 95%"></div>
-                            <div class="chart-bar" style="height: 100%"></div>
+                        <div class="card-details">
+                            <p class="card-label">Total Savings</p>
+                            <p class="card-amount">$12,847.50</p>
+                            <span class="card-trend positive">↑ 23% this month</span>
                         </div>
                     </div>
                     
-                    <div class="floating-bubble bubble-1">
-                        <div class="bubble-icon">👍</div>
-                        <div class="bubble-content">
-                            <p class="bubble-text">"Best finance app ever!"</p>
-                            <div class="bubble-stars">⭐⭐⭐⭐⭐</div>
-                            <p class="bubble-author">Sarah M.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="floating-bubble bubble-2">
-                        <div class="bubble-icon">💚</div>
-                        <div class="bubble-content">
-                            <p class="bubble-text">"Helped me save $5000!"</p>
-                            <div class="bubble-stars">⭐⭐⭐⭐⭐</div>
-                            <p class="bubble-author">John D.</p>
+                    <div class="floating-card budget-card">
+                        <div class="mini-progress">
+                            <div class="progress-circle">
+                                <svg viewBox="0 0 36 36">
+                                    <path class="progress-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                    <path class="progress-fill" stroke-dasharray="75, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                                </svg>
+                                <span class="progress-text">75%</span>
+                            </div>
+                            <div class="progress-info">
+                                <p class="progress-label">Budget Used</p>
+                                <p class="progress-amount">$1,500 / $2,000</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="scroll-indicator">
+            <div class="mouse">
+                <div class="wheel"></div>
+            </div>
+            <span>Scroll to explore</span>
         </div>
     </section>
 
@@ -129,68 +150,161 @@
         </div>
     </section>
 
+    <!-- Problem/Solution Section -->
+    <section class="problem-section">
+        <div class="container">
+            <div class="problem-grid">
+                <div class="problem-image">
+                    <img src="{{ url_for('static', filename='img/blackman_financial_stress.avif') }}" alt="Financial Stress">
+                    <div class="problem-overlay">
+                        <span class="problem-badge">Before Chengeta</span>
+                    </div>
+                </div>
+                <div class="problem-content">
+                    <h2 class="section-title">Tired of Financial Stress?</h2>
+                    <p class="problem-text">
+                        Most people have no idea where their money goes each month. Unexpected expenses pile up, savings goals feel impossible, and the stress keeps building.
+                    </p>
+                    <ul class="problem-list">
+                        <li><span class="problem-icon">✗</span> Wondering where your paycheck went</li>
+                        <li><span class="problem-icon">✗</span> Living paycheck to paycheck</li>
+                        <li><span class="problem-icon">✗</span> Unable to save for the future</li>
+                        <li><span class="problem-icon">✗</span> Stressed about unexpected expenses</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="solution-grid">
+                <div class="solution-content">
+                    <h2 class="section-title">Discover Financial Peace</h2>
+                    <p class="solution-text">
+                        With Chengeta, you'll finally know exactly where every dollar goes. Take control, build savings, and achieve the financial freedom you deserve.
+                    </p>
+                    <ul class="solution-list">
+                        <li><span class="solution-icon">✓</span> Know exactly where your money goes</li>
+                        <li><span class="solution-icon">✓</span> Build an emergency fund effortlessly</li>
+                        <li><span class="solution-icon">✓</span> Reach your savings goals faster</li>
+                        <li><span class="solution-icon">✓</span> Feel confident about your finances</li>
+                    </ul>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Start Your Journey →</a>
+                </div>
+                <div class="solution-image">
+                    <img src="{{ url_for('static', filename='img/financialfreedom.webp') }}" alt="Financial Freedom">
+                    <div class="solution-overlay">
+                        <span class="solution-badge">After Chengeta</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Features Section -->
     <section id="features" class="features">
         <div class="container">
             <div class="section-header-center">
+                <span class="section-badge">Features</span>
                 <h2 class="section-title">Powerful Features for Complete Control</h2>
                 <p class="section-subtitle">Everything you need to master your finances in one place</p>
             </div>
             
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon-box">
-                        <div class="feature-icon">📊</div>
+            <div class="features-showcase">
+                <div class="feature-visual">
+                    <img src="{{ url_for('static', filename='img/financecard.avif') }}" alt="Finance Tracking" class="feature-image">
+                    <div class="feature-float-card">
+                        <div class="float-header">
+                            <span class="float-icon-svg">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 3v18h18"/>
+                                    <path d="M18 17V9"/>
+                                    <path d="M13 17V5"/>
+                                    <path d="M8 17v-3"/>
+                                </svg>
+                            </span>
+                            <span class="float-title">Real-time Tracking</span>
+                        </div>
+                        <div class="float-stats">
+                            <div class="float-stat">
+                                <span class="stat-label">Today's Spending</span>
+                                <span class="stat-value">$45.20</span>
+                            </div>
+                            <div class="float-stat">
+                                <span class="stat-label">Budget Left</span>
+                                <span class="stat-value positive">$254.80</span>
+                            </div>
+                        </div>
                     </div>
-                    <h3>Smart Transaction Tracking</h3>
-                    <p>Automatically categorize and track every dollar. See where your money goes with instant insights.</p>
-                    <a href="#" class="feature-link">Learn more →</a>
                 </div>
                 
-                <div class="feature-card feature-card-highlight">
-                    <div class="feature-badge">Most Popular</div>
-                    <div class="feature-icon-box">
-                        <div class="feature-icon">💰</div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon-box">
+                            <svg class="feature-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 3v18h18"/>
+                                <path d="M18 17V9"/>
+                                <path d="M13 17V5"/>
+                                <path d="M8 17v-3"/>
+                            </svg>
+                        </div>
+                        <h3>Smart Transaction Tracking</h3>
+                        <p>Automatically categorize and track every dollar. See where your money goes with instant insights.</p>
                     </div>
-                    <h3>Budget Management</h3>
-                    <p>Set smart budgets that adapt to your lifestyle. Get real-time alerts before overspending.</p>
-                    <a href="#" class="feature-link">Learn more →</a>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon-box">
-                        <div class="feature-icon">📈</div>
+                    
+                    <div class="feature-card feature-card-highlight">
+                        <div class="feature-badge">Most Popular</div>
+                        <div class="feature-icon-box">
+                            <svg class="feature-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <h3>Budget Management</h3>
+                        <p>Set smart budgets that adapt to your lifestyle. Get real-time alerts before overspending.</p>
                     </div>
-                    <h3>Visual Analytics</h3>
-                    <p>Beautiful charts and graphs that make your financial data easy to understand at a glance.</p>
-                    <a href="#" class="feature-link">Learn more →</a>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon-box">
-                        <div class="feature-icon">🎯</div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon-box">
+                            <svg class="feature-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                            </svg>
+                        </div>
+                        <h3>Visual Analytics</h3>
+                        <p>Beautiful charts and graphs that make your financial data easy to understand at a glance.</p>
                     </div>
-                    <h3>Financial Goals</h3>
-                    <p>Set and track goals for savings, debt payoff, or major purchases. Stay motivated!</p>
-                    <a href="#" class="feature-link">Learn more →</a>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon-box">
-                        <div class="feature-icon">🔒</div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon-box">
+                            <svg class="feature-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 8v8"/>
+                                <path d="M8 12h8"/>
+                            </svg>
+                        </div>
+                        <h3>Financial Goals</h3>
+                        <p>Set and track goals for savings, debt payoff, or major purchases. Stay motivated!</p>
                     </div>
-                    <h3>Bank-Level Security</h3>
-                    <p>Your financial data is encrypted and protected with industry-standard security measures.</p>
-                    <a href="#" class="feature-link">Learn more →</a>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon-box">
-                        <div class="feature-icon">⚡</div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon-box">
+                            <svg class="feature-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                        </div>
+                        <h3>Bank-Level Security</h3>
+                        <p>Your financial data is encrypted and protected with industry-standard security measures.</p>
                     </div>
-                    <h3>Lightning Fast</h3>
-                    <p>Add transactions in seconds. Works seamlessly on desktop, tablet, and mobile devices.</p>
-                    <a href="#" class="feature-link">Learn more →</a>
+                    
+                    <div class="feature-card">
+                        <div class="feature-icon-box">
+                            <svg class="feature-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2a10 10 0 1 0 10 10H12V2z"/>
+                                <path d="M12 2a10 10 0 0 1 10 10"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </div>
+                        <h3>AI Financial Advisor</h3>
+                        <p>Get personalized tips and insights powered by AI to optimize your spending and savings.</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -200,14 +314,18 @@
     <section id="how-it-works" class="how-it-works">
         <div class="container">
             <div class="section-header-center">
+                <span class="section-badge">How It Works</span>
                 <h2 class="section-title">Start Tracking in 3 Simple Steps</h2>
                 <p class="section-subtitle">Get up and running in less than 2 minutes</p>
             </div>
             
-            <div class="steps-container">
+            <div class="steps-timeline">
                 <div class="step">
-                    <div class="step-number">
-                        <span>01</span>
+                    <div class="step-visual">
+                        <div class="step-number">
+                            <span>01</span>
+                        </div>
+                        <div class="step-line"></div>
                     </div>
                     <div class="step-content">
                         <h3>Create Your Free Account</h3>
@@ -219,11 +337,12 @@
                     </div>
                 </div>
                 
-                <div class="step-connector"></div>
-                
                 <div class="step">
-                    <div class="step-number">
-                        <span>02</span>
+                    <div class="step-visual">
+                        <div class="step-number">
+                            <span>02</span>
+                        </div>
+                        <div class="step-line"></div>
                     </div>
                     <div class="step-content">
                         <h3>Add Your Transactions</h3>
@@ -235,11 +354,11 @@
                     </div>
                 </div>
                 
-                <div class="step-connector"></div>
-                
                 <div class="step">
-                    <div class="step-number">
-                        <span>03</span>
+                    <div class="step-visual">
+                        <div class="step-number">
+                            <span>03</span>
+                        </div>
                     </div>
                     <div class="step-content">
                         <h3>Watch Your Wealth Grow</h3>
@@ -262,87 +381,137 @@
     <section id="testimonials" class="testimonials">
         <div class="container">
             <div class="section-header-center">
-                <h2 class="section-title">Loved by Thousands of Users</h2>
-                <p class="section-subtitle">See what our users are saying about Chengeta</p>
+                <span class="section-badge">Testimonials</span>
+                <h2 class="section-title">Real People, Real Results</h2>
+                <p class="section-subtitle">See what our users are saying about their financial transformation</p>
+            </div>
+            
+            <!-- Featured Testimonial -->
+            <div class="featured-testimonial">
+                <div class="featured-image">
+                    <img src="{{ url_for('static', filename='img/happycouple.webp') }}" alt="Happy Couple">
+                </div>
+                <div class="featured-content">
+                    <div class="quote-icon">"</div>
+                    <p class="featured-quote">Chengeta completely transformed how we manage our finances as a couple. We went from constant money arguments to being on the same page and saving for our dream home together!</p>
+                    <div class="featured-author">
+                        <div class="author-info">
+                            <h4>James & Sarah</h4>
+                            <p>Saved $15,000 in 8 months</p>
+                        </div>
+                        <div class="testimonial-stars">★★★★★</div>
+                    </div>
+                </div>
             </div>
             
             <div class="testimonials-grid">
                 <div class="testimonial-card">
                     <div class="testimonial-header">
-                        <div class="testimonial-avatar">SM</div>
+                        <div class="testimonial-avatar">
+                            <img src="{{ url_for('static', filename='img/younghappyblackwoman.webp') }}" alt="Sarah Martinez">
+                        </div>
                         <div>
                             <h4>Sarah Martinez</h4>
                             <p class="testimonial-role">Freelance Designer</p>
                         </div>
-                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                        <div class="testimonial-stars">★★★★★</div>
                     </div>
                     <p class="testimonial-text">"This app changed my financial life! I've saved over $5,000 in just 6 months by tracking my spending. The budget alerts are a game-changer!"</p>
-                    <div class="testimonial-date">January 15, 2025</div>
+                    <div class="testimonial-result">
+                        <span class="result-label">Result:</span>
+                        <span class="result-value">+$5,000 saved</span>
+                    </div>
                 </div>
                 
                 <div class="testimonial-card">
                     <div class="testimonial-header">
-                        <div class="testimonial-avatar">JD</div>
+                        <div class="testimonial-avatar avatar-initial">JD</div>
                         <div>
                             <h4>John Davis</h4>
                             <p class="testimonial-role">Software Engineer</p>
                         </div>
-                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                        <div class="testimonial-stars">★★★★★</div>
                     </div>
                     <p class="testimonial-text">"Finally, a finance tracker that's actually easy to use! Love the visual reports and how quickly I can add transactions. Highly recommend!"</p>
-                    <div class="testimonial-date">December 28, 2024</div>
+                    <div class="testimonial-result">
+                        <span class="result-label">Result:</span>
+                        <span class="result-value">Debt-free in 1 year</span>
+                    </div>
                 </div>
                 
                 <div class="testimonial-card">
                     <div class="testimonial-header">
-                        <div class="testimonial-avatar">EW</div>
+                        <div class="testimonial-avatar avatar-initial">EW</div>
                         <div>
                             <h4>Emily Wilson</h4>
                             <p class="testimonial-role">Marketing Manager</p>
                         </div>
-                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                        <div class="testimonial-stars">★★★★★</div>
                     </div>
                     <p class="testimonial-text">"Best finance app I've tried! The budget tracking feature helped me finally stick to my spending plan. Plus it's completely free - can't beat that!"</p>
-                    <div class="testimonial-date">December 10, 2024</div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-header">
-                        <div class="testimonial-avatar">MR</div>
-                        <div>
-                            <h4>Michael Roberts</h4>
-                            <p class="testimonial-role">Business Owner</p>
-                        </div>
-                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                    <div class="testimonial-result">
+                        <span class="result-label">Result:</span>
+                        <span class="result-value">30% less spending</span>
                     </div>
-                    <p class="testimonial-text">"Perfect for managing both personal and business finances. The reports give me clear insights into where my money is going. Couldn't be happier!"</p>
-                    <div class="testimonial-date">November 22, 2024</div>
                 </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-header">
-                        <div class="testimonial-avatar">LT</div>
-                        <div>
-                            <h4>Lisa Thompson</h4>
-                            <p class="testimonial-role">Teacher</p>
-                        </div>
-                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                    </div>
-                    <p class="testimonial-text">"So simple yet powerful! I love how I can set budgets and get warnings before overspending. Helped me save for my dream vacation!"</p>
-                    <div class="testimonial-date">November 5, 2024</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Money Tips Section -->
+    <section class="tips-section">
+        <div class="container">
+            <div class="tips-grid">
+                <div class="tips-image">
+                    <img src="{{ url_for('static', filename='img/not_burninganydollar.avif') }}" alt="Save Money">
                 </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-header">
-                        <div class="testimonial-avatar">AK</div>
-                        <div>
-                            <h4>Alex Kim</h4>
-                            <p class="testimonial-role">Student</p>
+                <div class="tips-content">
+                    <span class="section-badge">Pro Tips</span>
+                    <h2 class="section-title">Stop Burning Your Hard-Earned Money</h2>
+                    <p class="tips-intro">Our AI advisor helps you identify spending leaks and provides personalized recommendations to maximize your savings.</p>
+                    
+                    <div class="tips-list">
+                        <div class="tip-item">
+                            <div class="tip-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                </svg>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Smart Spending Alerts</h4>
+                                <p>Get notified before you overspend in any category</p>
+                            </div>
                         </div>
-                        <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
+                        <div class="tip-item">
+                            <div class="tip-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 3v18h18"/>
+                                    <path d="M18 17V9"/>
+                                    <path d="M13 17V5"/>
+                                    <path d="M8 17v-3"/>
+                                </svg>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Spending Pattern Analysis</h4>
+                                <p>Discover where your money really goes each month</p>
+                            </div>
+                        </div>
+                        <div class="tip-item">
+                            <div class="tip-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 8v8"/>
+                                    <path d="M8 12h8"/>
+                                </svg>
+                            </div>
+                            <div class="tip-content">
+                                <h4>Personalized Savings Goals</h4>
+                                <p>AI-powered recommendations based on your income</p>
+                            </div>
+                        </div>
                     </div>
-                    <p class="testimonial-text">"As a student on a tight budget, this app is essential! It's free, easy to use, and helps me make every dollar count. Thank you!"</p>
-                    <div class="testimonial-date">October 18, 2024</div>
+                    
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Free Financial Tips →</a>
                 </div>
             </div>
         </div>
@@ -350,28 +519,33 @@
 
     <!-- CTA Section -->
     <section class="cta">
+        <div class="cta-background">
+            <img src="{{ url_for('static', filename='img/money-trees.avif') }}" alt="Grow Your Wealth" class="cta-bg-image">
+            <div class="cta-overlay"></div>
+        </div>
         <div class="container">
             <div class="cta-content">
-                <h2 class="cta-title">Ready to Transform Your Financial Life?</h2>
-                <p class="cta-subtitle">Join over 10,000 users who are already tracking their way to financial freedom</p>
+                <h2 class="cta-title">Ready to Grow Your Wealth?</h2>
+                <p class="cta-subtitle">Join over 10,000 users who are already on their journey to financial freedom</p>
                 <div class="cta-actions">
-                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-xl">
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-cta btn-xl">
                         <span>Start Tracking Free</span>
                         <span class="btn-arrow">→</span>
                     </a>
-                    <p class="cta-note">✓ No credit card required  •  ✓ Setup in 2 minutes  •  ✓ Cancel anytime</p>
+                    <p class="cta-note">No credit card required  •  Setup in 2 minutes  •  Cancel anytime</p>
                 </div>
                 <div class="cta-trust">
                     <div class="trust-item">
-                        <span class="trust-icon">🔒</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
                         <span>Bank-level security</span>
                     </div>
                     <div class="trust-item">
-                        <span class="trust-icon">⭐</span>
-                        <span>4.9/5 rating</span>
+                        <span>★ 4.9/5 rating</span>
                     </div>
                     <div class="trust-item">
-                        <span class="trust-icon">💚</span>
                         <span>Loved by 10K+ users</span>
                     </div>
                 </div>
@@ -387,7 +561,7 @@
                     <div class="footer-logo">
                         <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Chengeta Logo" class="logo-img">
                     </div>
-                    <p>Take control of your financial future today.</p>
+                    <p>Take control of your financial future today. Start tracking, start saving, start living.</p>
                 </div>
                 <div class="footer-links">
                     <div class="footer-column">
@@ -427,7 +601,6 @@
                 mobileMenu.classList.toggle('active');
             });
 
-            // Close mobile menu when clicking a link
             mobileMenu.querySelectorAll('a').forEach(link => {
                 link.addEventListener('click', () => {
                     mobileMenuToggle.classList.remove('active');
@@ -435,7 +608,6 @@
                 });
             });
 
-            // Close mobile menu when clicking outside
             document.addEventListener('click', (e) => {
                 if (!mobileMenuToggle.contains(e.target) && !mobileMenu.contains(e.target)) {
                     mobileMenuToggle.classList.remove('active');
@@ -444,7 +616,7 @@
             });
         }
 
-        // Smooth scrolling for navigation links
+        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -458,7 +630,7 @@
             });
         });
 
-        // Navbar background on scroll
+        // Navbar scroll effect
         const navbar = document.querySelector('.landing-nav');
         window.addEventListener('scroll', () => {
             if (window.scrollY > 50) {
@@ -468,7 +640,7 @@
             }
         });
 
-        // Animate elements on scroll
+        // Scroll animations
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -482,11 +654,9 @@
             });
         }, observerOptions);
 
-        // Observe all feature cards and testimonials
-        document.querySelectorAll('.feature-card, .testimonial-card, .step').forEach(el => {
+        document.querySelectorAll('.feature-card, .testimonial-card, .step, .problem-grid, .solution-grid, .tip-item, .featured-testimonial').forEach(el => {
             observer.observe(el);
         });
     </script>
 </body>
 </html>
-

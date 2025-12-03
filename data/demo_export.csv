@@ -1,0 +1,28 @@
+id,date,amount,category,description,type
+1,2025-12-02 12:09:03,3000.0,Salary,Monthly salary payment,income
+2,2025-12-02 12:10:03,3000.0,Salary,Monthly salary payment,income
+3,2025-12-02 12:10:03,500.0,Freelance,Website design project,income
+4,2025-12-02 12:10:03,200.0,Investment,Stock dividends,income
+5,2025-12-02 12:10:03,800.0,Bills,Rent payment,expense
+6,2025-12-02 12:10:03,200.0,Bills,"Utilities (electric, water, internet)",expense
+7,2025-12-02 12:10:03,250.0,Food,Groceries for the month,expense
+8,2025-12-02 12:10:03,150.0,Food,Restaurants and dining out,expense
+9,2025-12-02 12:10:03,100.0,Transport,Gas and parking,expense
+10,2025-12-02 12:10:03,80.0,Transport,Public transit pass,expense
+11,2025-12-02 12:10:03,120.0,Entertainment,Movies and streaming services,expense
+12,2025-12-02 12:10:03,50.0,Entertainment,Concert tickets,expense
+13,2025-12-02 12:10:03,150.0,Shopping,New clothes,expense
+14,2025-12-02 12:10:03,75.0,Health,Gym membership,expense
+15,2025-12-02 12:10:23,3000.0,Salary,Monthly salary payment,income
+16,2025-12-02 12:10:23,500.0,Freelance,Website design project,income
+17,2025-12-02 12:10:23,200.0,Investment,Stock dividends,income
+18,2025-12-02 12:10:23,800.0,Bills,Rent payment,expense
+19,2025-12-02 12:10:23,200.0,Bills,"Utilities (electric, water, internet)",expense
+20,2025-12-02 12:10:23,250.0,Food,Groceries for the month,expense
+21,2025-12-02 12:10:23,150.0,Food,Restaurants and dining out,expense
+22,2025-12-02 12:10:23,100.0,Transport,Gas and parking,expense
+23,2025-12-02 12:10:23,80.0,Transport,Public transit pass,expense
+24,2025-12-02 12:10:23,120.0,Entertainment,Movies and streaming services,expense
+25,2025-12-02 12:10:23,50.0,Entertainment,Concert tickets,expense
+26,2025-12-02 12:10:23,150.0,Shopping,New clothes,expense
+27,2025-12-02 12:10:23,75.0,Health,Gym membership,expense

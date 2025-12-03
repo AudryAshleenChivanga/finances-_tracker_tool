@@ -9,12 +9,18 @@ from models import db, User
 from auth import auth_bp
 from finance_tracker import FinanceTracker
 from visualizer import FinanceVisualizer
+from ai_service import get_ai_response
+from youtube_service import fetch_finance_videos
 import os
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key-change-this-in-production'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///finance_tracker.db'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'dev-secret-key-change-in-production')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///finance_tracker.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize extensions
@@ -371,21 +377,45 @@ def get_recent_stats():
 @app.route('/api/ai/chat', methods=['POST'])
 @login_required
 def ai_chat():
-    """ChengeAI chat endpoint - provides financial advice."""
+    """ChengeAI chat endpoint - provides AI-powered financial advice."""
     try:
         data = request.get_json()
-        user_message = data.get('message', '').lower()
+        user_message = data.get('message', '')
+        conversation_history = data.get('history', [])
         
         # Get user's financial context
         tracker = get_user_tracker()
         summary = tracker.get_summary()
         
-        # Generate contextual response
-        response = generate_financial_advice(user_message, summary, current_user)
+        # Get expense breakdown by category
+        category_summary = tracker.get_category_summary()
+        
+        # Extract expense amounts from category summary
+        expense_categories = {
+            cat: data['expense'] 
+            for cat, data in category_summary.items() 
+            if data['expense'] > 0
+        }
+        
+        # Prepare user data for AI
+        user_data = {
+            'total_income': summary['total_income'],
+            'total_expenses': summary['total_expenses'],
+            'balance': summary['balance'],
+            'transaction_count': summary['transaction_count'],
+            'top_categories': [
+                {'category': cat, 'amount': amount}
+                for cat, amount in sorted(expense_categories.items(), key=lambda x: x[1], reverse=True)[:5]
+            ]
+        }
+        
+        # Get AI response
+        result = get_ai_response(user_message, user_data, conversation_history)
         
         return jsonify({
-            'success': True,
-            'response': response
+            'success': result['success'],
+            'response': result['response'],
+            'source': result.get('source', 'unknown')
         })
     except Exception as e:
         return jsonify({
@@ -394,197 +424,28 @@ def ai_chat():
         }), 500
 
 
-def generate_financial_advice(message, summary, user):
-    """Generate financial advice based on user question and their data."""
-    
-    # Financial advice database
-    advice_responses = {
-        'save': f"""Great question about saving! Based on your data:
-
-💰 **Your Current Balance:** ${summary['balance']:,.2f}
-
-Here are my top saving tips:
-
-1. **Automate Your Savings**: Set up automatic transfers to savings account
-2. **Track Every Expense**: Use Chengeta to monitor where your money goes
-3. **Cut Unnecessary Subscriptions**: Review and cancel unused services
-4. **50/30/20 Rule**: 50% needs, 30% wants, 20% savings
-5. **Emergency Fund First**: Build 3-6 months of expenses
-
-Would you like specific tips based on your spending patterns?""",
-
-        'budget': f"""Excellent! Let's talk budgeting.
-
-📊 **Your Stats:**
-- Total Income: ${summary['total_income']:,.2f}
-- Total Expenses: ${summary['total_expenses']:,.2f}
-
-**Budgeting Strategy:**
-
-1. **Zero-Based Budget**: Assign every dollar a job
-2. **Use Chengeta Budgets**: Set limits for each category
-3. **Review Weekly**: Check your budget status regularly
-4. **Adjust Monthly**: Refine based on actual spending
-5. **Include Fun Money**: Budget for entertainment to stay motivated
-
-Try setting budgets in the Budgets page!""",
-
-        'debt': """Let's tackle debt together! 💪
-
-**Debt Reduction Strategies:**
-
-1. **Debt Avalanche**: Pay highest interest rate first (saves most money)
-2. **Debt Snowball**: Pay smallest balance first (quick wins, motivation)
-3. **Balance Transfers**: Move high-interest debt to 0% cards
-4. **Increase Income**: Side hustles to accelerate payoff
-5. **Track Progress**: Use Chengeta to monitor debt reduction
-
-**Quick Tips:**
-- Stop adding new debt
-- Pay more than minimum
-- Negotiate lower rates
-- Consider debt consolidation
-
-You've got this!""",
-
-        'invest': """Smart thinking about investing! 📈
-
-**Investment Basics:**
-
-1. **Start Small**: Begin with as little as $50/month
-2. **Index Funds**: Low-cost, diversified option
-3. **401(k) Match**: Free money from employer
-4. **IRA/Roth IRA**: Tax-advantaged retirement accounts
-5. **Emergency Fund First**: Save 3-6 months expenses before investing
-
-**Golden Rules:**
-- Invest consistently (dollar-cost averaging)
-- Diversify (don't put all eggs in one basket)
-- Think long-term (time in market beats timing)
-- Keep fees low
-
-**Resources:** Check our Videos section for beginner investment courses!""",
-
-        'emergency': """Building an emergency fund is crucial! 🛡️
-
-**Emergency Fund Basics:**
-
-**How Much?**
-- Minimum: $1,000 (starter fund)
-- Goal: 3-6 months of expenses
-- High-earning: 6-12 months
-
-**Where to Keep It?**
-- High-yield savings account
-- Money market account
-- Easy access, but separate from spending
-
-**How to Build:**
-1. Start with $500-1,000
-2. Save $50-100 per paycheck
-3. Use windfalls (tax refunds, bonuses)
-4. Track progress in Chengeta
-5. Don't touch it unless emergency!
-
-**Pro Tip:** Set up automatic transfers on payday!""",
-
-        'retirement': """Planning for retirement? Great! 🏖️
-
-**Retirement Planning Essentials:**
-
-**Start Now:**
-- Age 20s: Save 10-15% of income
-- Age 30s: Save 15-20% of income
-- Age 40s: Save 20-25% of income
-
-**Accounts to Use:**
-1. **401(k)**: Employer match = free money!
-2. **IRA**: Traditional or Roth
-3. **Roth IRA**: Tax-free growth
-4. **HSA**: Triple tax advantage
-
-**Retirement Math:**
-- Rule of 25: Need 25x annual expenses
-- 4% Rule: Withdraw 4% annually
-- Social Security: Extra cushion
-
-**Action Steps:**
-1. Calculate retirement needs
-2. Maximize employer match
-3. Open IRA account
-4. Increase contributions annually
-5. Track progress quarterly
-
-Start today - compound interest is powerful!""",
-
-        'income': """Want to increase your income? Let's explore! 💼
-
-**Income Boosting Strategies:**
-
-**Side Hustles:**
-- Freelancing (Upwork, Fiverr)
-- Online tutoring
-- Selling digital products
-- Consulting in your expertise
-
-**Career Growth:**
-- Ask for raise (prepare case)
-- Develop new skills
-- Get certifications
-- Network actively
-- Consider job change
-
-**Passive Income:**
-- Rental properties
-- Dividend stocks
-- Online courses
-- Affiliate marketing
-
-**Quick Wins:**
-- Negotiate salary at job offers
-- Take on overtime
-- Monetize hobbies
-- Sell unused items
-
-Track all income sources in Chengeta!""",
-
-        'default': f"""Hello! I'm ChengeAI, your personal financial advisor! 🤖
-
-I can help you with:
-
-💰 **Saving Money** - Tips and strategies
-📊 **Budgeting** - Create and stick to budgets
-💳 **Debt Management** - Get debt-free
-📈 **Investing** - Grow your wealth
-🛡️ **Emergency Funds** - Build financial security
-🏖️ **Retirement Planning** - Secure your future
-💼 **Income Growth** - Earn more money
-
-**Your Financial Overview:**
-- Total Income: ${summary['total_income']:,.2f}
-- Total Expenses: ${summary['total_expenses']:,.2f}
-- Current Balance: ${summary['balance']:,.2f}
-
-What would you like to know about? Just ask me anything!"""
-    }
-    
-    # Determine which response to give
-    if any(word in message for word in ['save', 'saving', 'savings']):
-        return advice_responses['save']
-    elif any(word in message for word in ['budget', 'budgeting', 'spending plan']):
-        return advice_responses['budget']
-    elif any(word in message for word in ['debt', 'loan', 'credit card', 'owe']):
-        return advice_responses['debt']
-    elif any(word in message for word in ['invest', 'investment', 'stock', 'portfolio']):
-        return advice_responses['invest']
-    elif any(word in message for word in ['emergency', 'fund', 'rainy day']):
-        return advice_responses['emergency']
-    elif any(word in message for word in ['retirement', 'retire', '401k', 'ira', 'pension']):
-        return advice_responses['retirement']
-    elif any(word in message for word in ['income', 'earn', 'money', 'salary', 'side hustle']):
-        return advice_responses['income']
-    else:
-        return advice_responses['default']
+@app.route('/api/resources/videos', methods=['GET'])
+@login_required
+def get_resource_videos():
+    """Fetch finance education videos from YouTube."""
+    try:
+        # Check if refresh is requested
+        force_refresh = request.args.get('refresh', 'false').lower() == 'true'
+        
+        # Fetch videos (from cache or YouTube API)
+        videos = fetch_finance_videos(force_refresh=force_refresh)
+        
+        return jsonify({
+            'success': True,
+            'videos': videos,
+            'count': len(videos)
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e),
+            'videos': []
+        }), 500
 
 
 # Database initialization

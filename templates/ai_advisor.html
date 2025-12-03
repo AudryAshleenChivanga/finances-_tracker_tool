@@ -11,37 +11,74 @@
     <!-- Page Header -->
     <div class="page-header">
         <div>
-            <h1>🤖 ChengeAI - Your Personal Financial Advisor</h1>
+            <h1>ChengeAI - Your Personal Financial Advisor</h1>
             <p class="subtitle">Get instant, personalized financial advice powered by AI</p>
         </div>
-        <button class="btn btn-secondary btn-sm" onclick="clearChat()">Clear Chat</button>
+        <button class="btn btn-secondary btn-sm" onclick="clearChat()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+            </svg>
+            Clear Chat
+        </button>
     </div>
 
     <div class="ai-layout">
         <!-- Chat Container -->
         <div class="chat-container">
             <div class="chat-welcome" id="chat-welcome">
-                <div class="welcome-icon">🤖</div>
+                <div class="welcome-icon">
+                    <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 2a10 10 0 1 0 10 10H12V2z"/>
+                        <path d="M12 2a10 10 0 0 1 10 10"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </div>
                 <h2>Welcome to ChengeAI!</h2>
                 <p>I'm your personal financial advisor. Ask me anything about:</p>
                 <div class="suggestion-chips">
                     <button class="chip" onclick="askQuestion('How can I save more money?')">
-                        💰 Saving tips
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 6v6l4 2"/>
+                        </svg>
+                        Saving tips
                     </button>
                     <button class="chip" onclick="askQuestion('What is a good budget strategy?')">
-                        📊 Budgeting advice
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 3v18h18"/>
+                            <path d="M18 17V9"/>
+                            <path d="M13 17V5"/>
+                            <path d="M8 17v-3"/>
+                        </svg>
+                        Budgeting advice
                     </button>
                     <button class="chip" onclick="askQuestion('How do I reduce debt?')">
-                        💳 Debt management
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
+                            <line x1="1" y1="10" x2="23" y2="10"/>
+                        </svg>
+                        Debt management
                     </button>
                     <button class="chip" onclick="askQuestion('Investment basics for beginners')">
-                        📈 Investment tips
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                        </svg>
+                        Investment tips
                     </button>
                     <button class="chip" onclick="askQuestion('How to build an emergency fund?')">
-                        🛡️ Emergency funds
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        Emergency funds
                     </button>
                     <button class="chip" onclick="askQuestion('Tips for retirement planning')">
-                        🏖️ Retirement planning
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 8v8"/>
+                            <path d="M8 12h8"/>
+                        </svg>
+                        Retirement planning
                     </button>
                 </div>
             </div>
@@ -62,7 +99,10 @@
                         required
                     >
                     <button type="submit" class="send-btn" id="send-btn">
-                        <span class="send-icon">📤</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"/>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        </svg>
                     </button>
                 </form>
                 <p class="chat-disclaimer">ChengeAI provides general advice. Consult a professional for specific financial planning.</p>
@@ -71,7 +111,12 @@
 
         <!-- Quick Tips Sidebar -->
         <div class="tips-sidebar">
-            <h3>💡 Quick Tips</h3>
+            <h3>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+                Quick Tips
+            </h3>
             <div class="tip-card">
                 <h4>50/30/20 Rule</h4>
                 <p>Allocate 50% needs, 30% wants, 20% savings</p>
@@ -100,4 +145,3 @@
 {% block extra_js %}
 <script src="{{ url_for('static', filename='js/ai_advisor.js') }}"></script>
 {% endblock %}
-
